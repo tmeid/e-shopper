@@ -10,6 +10,10 @@ class ProductImg extends Model
 {
     use HasFactory;
     protected $fillable = ['product_id', 'path'];
+    protected $attributes = [
+        'path' => 'ao-tre-em-dep-3.JPG'
+    ];
+
     public function product(){
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }

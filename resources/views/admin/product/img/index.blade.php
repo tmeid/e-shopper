@@ -36,7 +36,7 @@ Sửa sản phẩm | E-shopper
 
                             <form action="" method="post" enctype="multipart/form-data">
                                 @csrf
-                                <input type="file" name="upload_image">
+                                <input type="file" name="upload_image[]" multiple>
                                 <input type="submit" name="submit">
                             </form>
                             

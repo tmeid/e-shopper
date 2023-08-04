@@ -22,10 +22,9 @@ class AdminMiddleware
             return redirect()->route('login');
         }
 
-        // đăng nhập nhưng sai quyền, logout và redirect đăng nhập lại
+        // user truy cập trang admin
         if(Auth::user()->role !== 1){
-            Auth::logout();
-            return redirect()->route('login');
+            abort(401);
         }
         return $next($request);
     }

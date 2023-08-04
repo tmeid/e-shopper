@@ -35,8 +35,11 @@ class ShopController extends Controller
 
     }
 
-    public function index(Request $request, $id = null){
-
+    public function index(Request $request, $slug = null){
+        $id = null;
+        if(!empty($slug)){
+            $id = $this->categoryRepo->getId(['slug' => $slug]);
+        }
         $categories = $this->categoryRepo->getAll();
         $colors = $this->productItemRepo->getDistinctColor();
 

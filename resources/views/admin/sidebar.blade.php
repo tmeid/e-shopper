@@ -13,7 +13,7 @@
     <li class="nav-item active">
         <a class="nav-link" href="{{ route('admin.index')}}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span></a>
+            <span>Quản lý</span></a>
     </li>
 
     <!-- Divider -->
@@ -33,24 +33,36 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOrder" aria-expanded="true" aria-controls="collapseOrder">
             <i class="fas fa-fw fa-cog"></i>
             <span>Đơn hàng</span>
         </a>
-        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar">
+        <div id="collapseOrder" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ route('admin.order.list') }}">Danh sách</a>
             </div>
         </div>
     </li>
 
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProceeds" aria-expanded="true" aria-controls="collapseProceeds">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Doanh thu</span>
+        </a>
+        <div id="collapseProceeds" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="">Xem</a>
+            </div>
+        </div>
+    </li>
+
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCategory" aria-expanded="true" aria-controls="collapseCategory">
             <i class="fas fa-fw fa-cog"></i>
-            <span>Category</span>
+            <span>Danh mục</span>
         </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseCategory" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="">Danh sách</a>
                 <a class="collapse-item" href="">Thêm</a>
@@ -58,7 +70,31 @@
         </div>
     </li>
 
-    
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBrand" aria-expanded="true" aria-controls="collapseBrand">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Thương hiệu</span>
+        </a>
+        <div id="collapseBrand" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="">Danh sách</a>
+                <a class="collapse-item" href="">Thêm</a>
+            </div>
+        </div>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser" aria-expanded="true" aria-controls="collapseUser">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Người dùng</span>
+        </a>
+        <div id="collapseUser" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="{{ route('admin.user.list') }}">Danh sách</a>
+            </div>
+        </div>
+    </li>
+
 
 </ul>
 <!-- End of Sidebar -->

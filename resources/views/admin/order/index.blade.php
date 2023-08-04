@@ -10,7 +10,31 @@ Thêm danh mục | E-shopper
 
 @section('content')
 
-<h3>Danh sách các đơn hàng</h3>
+<h3>Quản lý các đơn hàng</h3>
+
+<div class="row">
+    <form action="" class="col-lg-5 col-md-6 mb-3">
+        <div class="input-group">
+            <input name="search" type="text" class="form-control" placeholder="Tìm..." value="{{ request('search') }}">
+            <div class="input-group-append">
+                <button type="submit" class="input-group-text bg-transparent text-primary">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<form action="" class="mb-3">
+    <select class="form-control" name="filter_by" id="" onchange="this.form.submit()" style="width:initial">
+        <option value="">Bộ lọc</option>
+        <option value="1" {{ request('filter_by') === '1' ? 'selected' : '' }}>Chờ xử lý</option>
+        <option value="2" {{ request('filter_by') === '2' ? 'selected' : '' }}>Đang vận chuyển</option>
+        <option value="3" {{ request('filter_by') === '3' ? 'selected' : '' }}>Đang giao</option>
+        <option value="4" {{ request('filter_by') === '4' ? 'selected' : '' }}>Đã giao</option>
+        <option value="5" {{ request('filter_by') === '5' ? 'selected' : '' }}>Đã huỷ</option>
+    </select>
+</form>
 
 <table class="table table-bordered" style="color:#000">
     <thead>
@@ -27,18 +51,8 @@ Thêm danh mục | E-shopper
         @foreach($orders as $order)
         <tr>
             <td>{{ $order->id }}</td>
-            <td>{{ $order->order_total .' đ' }}</td>
-            @if($order->order_status_id == 1)
-            <td>Chờ xử lý</td>
-            @elseif($order->order_status_id == 2)
-            <td>Đang vận chuyển</td>
-            @elseif($order->order_status_id == 3)
-            <td>Đang giao</td>
-            @elseif($order->order_status_id == 3)
-            <td>Đã giao</td>
-            else
-            <td>Đã huỷ</td>
-            @endif
+            <td>{{ number_format($order->order_total, 0, null, '.') .' đ' }}</td>
+            <td>{{ $order->orderStatus->status }}</td>
             <td>
                 <form action="{{ route('admin.order.changeStatus', ['id' => $order->id] )}}" method="POST">
                     @csrf
@@ -63,11 +77,9 @@ Thêm danh mục | E-shopper
         </tr>
         @endif
 
-        <!-- Button trigger modal -->
-
-
-
-
     </tbody>
 </table>
+<div class="col-12 pb-1 d-flex justify-content-center pt-3">
+    {{$orders->links() }}
+</div>
 @endsection

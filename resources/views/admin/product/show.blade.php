@@ -28,7 +28,7 @@ Chi tiết sản phẩm
                 <div class="position-relative row">
                     <label for="" class="col-md-3 text-md-right col-form-label">Quản lý sản phẩm con:</label>
                     <div class="col-md-9 col-xl-8 col-form-label">
-                        <p><a href="">Qly sản phẩm con</a></p>
+                        <p><a href="{{ route('admin.product.showSubItems', ['product_id' => $product->id]) }}">Qly sản phẩm con</a></p>
                     </div>
                 </div>
 

@@ -1,7 +1,7 @@
 @extends('dashboard')
 
 @section('title')
-Thêm danh mục | E-shopper
+Dashboard | E-shopper
 @endsection
 
 @section('dashboard-type')
@@ -16,7 +16,7 @@ Admin Dashboard
 
 
 <div class="container-fluid">
-    <h2>QUẢN LÝ ĐƠN HÀNG</h2>
+    <h2 class="mb-3">QUẢN LÝ ĐƠN HÀNG</h2>
     @if(count($orders))
         <p><span>1. Chờ xử lý: {{ $orders->where('order_status_id', 1)->count() }}</span></p>
         <p><span>2. Đang vận chuyển: {{ $orders->where('order_status_id', 2)->count() }}</span></p>

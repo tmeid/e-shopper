@@ -16,6 +16,6 @@ class AdminController extends Controller
     }
     public function index(){
         $orders = $this->orderRepo->getAll();
-        return view('admin.category.index')->with('orders', $orders);
+        return view('admin.index')->with('orders', $orders);
     }
 }

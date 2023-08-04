@@ -10,10 +10,14 @@ class ProductItem extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'product_id',
+        'sku',
+        'color',
+        'size',
         'quantity'
     ];
     public function product(){
-        return $this->belongsTo(Product::class, 'product_id', 'id');
+        return $this->belongsTo(Product::class, 'product_id', 'id')->withTrashed();
     }
 
     public function orders(){

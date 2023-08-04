@@ -17,6 +17,8 @@ use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\AdminOrderController;
+use App\Http\Controllers\Admin\SubProductController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,22 +31,12 @@ use App\Http\Controllers\Admin\AdminOrderController;
 |
 */
 
-// Route::get('/', function (ProductRepositoryInterface $productRepo) {
-//     // return $productRepo->getProducts(); 
-//     return $productRepo->find(2);
-// });
-// Route::get('/', function (ProductService $productRepo) {
-//     // return $productRepo->getProducts(); 
-//     return $productRepo->getAll();
-// });
-
 
 Route::get('/', [IndexController::class, 'index'])->name('home');
-Route::get('/category/{id}', [CategoryController::class, 'index'])->name('category');
 
 Route::prefix('shop')->name('shop.')->group(function(){
     Route::get('/', [ShopController::class, 'index'])->name('products');
-    Route::get('/category/{id}', [ShopController::class, 'index'])->name('category');
+    Route::get('/category/{category}', [ShopController::class, 'index'])->name('category');
 });
 
 Route::prefix('product')->name('product.')->group(function(){
@@ -71,6 +63,8 @@ Auth::routes();
 // admin 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function(){
     Route::get('/', [AdminController::class, 'index'])->name('index');
+
+    // manage product
     Route::prefix('product')->name('product.')->group(function(){
         Route::get('/', [AdminProductController::class, 'index'])->name('list');
         Route::get('show/{id}', [AdminProductController::class, 'show'])->name('show');
@@ -78,26 +72,47 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
         Route::get('add', [AdminProductController::class, 'add'])->name('add');
         Route::post('add', [AdminProductController::class, 'postAdd'])->name('postAdd');
 
-        Route::get('add-sub-prod/{id}', [AdminProductController::class, 'addSub'])->name('subProduct');
-        Route::post('add-sub-prod/{id}', [AdminProductController::class, 'postSub'])->name('postSubProduct');
+        Route::get('edit/{id}', [AdminProductController::class, 'showFormEdit'])->name('showFormEdit');
+        Route::post('edit/{id}', [AdminProductController::class, 'edit'])->name('edit');
+        Route::get('/delete/{product}', [AdminProductController::class, 'delete'])->name('sortDelete');
+        Route::get('/restore/{id}', [AdminProductController::class, 'restore'])->name('restore');
+        Route::delete('/force-delete', [AdminProductController::class, 'forceDelete'])->name('forceDelete');
 
         Route::get('/{product_id}/image', [ProductImgController::class, 'index'])->name('productImg');
         Route::post('/{product_id}/image', [ProductImgController::class, 'upload'])->name('uploadProductImg');
         Route::get('/{product_id}/image/{product_img_id}', [ProductImgController::class, 'delete'])->name('deleteImg');
+
+        Route::get('/{product_id}/sub-items', [SubProductController::class, 'showSubItems'])->name('showSubItems');
+        Route::get('/{product}/sub-item/{sub_item}', [SubProductController::class, 'showSubItem'])->name('showSubItem');  
+        Route::post('/{product}/sub-item/{sub_item}', [SubProductController::class, 'editSubItem'])->name('editSubItem');
+        Route::get('/{product}/sub-item', [SubProductController::class, 'addSubItem'])->name('addSubItem');
+        Route::post('/{product}/sub-item', [SubProductController::class, 'postAddSubItem'])->name('postAddSubItem');
+
+        // delete subitem
     
-        Route::get('edit/{id}', [AdminProductController::class, 'showFormEdit'])->name('showFormEdit');
-        Route::post('edit/{id}', [AdminProductController::class, 'edit'])->name('edit');
-        Route::get('delete/{id}', [AdminProductController::class, 'delete'])->name('delete');
     });
 
+    // manage order
     Route::prefix('order')->name('order.')->group(function(){
         Route::get('/', [AdminOrderController::class, 'index'])->name('list');
         Route::post('/change-status/{id}', [AdminOrderController::class, 'changeStatus'])->name('changeStatus');
         Route::get('/show/{id}', [AdminOrderController::class, 'detail'])->name('detail');
     });
+
+
+    // manage user
+    Route::prefix('user')->name('user.')->group(function(){
+        Route::get('/', [AdminUserController::class, 'index'])->name('list');
+        Route::get('/delete/{user}', [AdminUserController::class, 'delete'])->name('sortDelete');
+        Route::get('/restore/{id}', [AdminUserController::class, 'restore'])->name('restore');
+        Route::delete('/force-delete', [AdminUserController::class, 'forceDelete'])->name('forceDelete');
+
+        // edit user
+    });
    
 });
 
+// user
 Route::prefix('user')->name('user.')->middleware(['auth', 'user'])->group(function(){
     Route::get('/', [UserController::class, 'index'])->name('index');
 
@@ -109,5 +124,3 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'user'])->group(functi
       
 });
 
-
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

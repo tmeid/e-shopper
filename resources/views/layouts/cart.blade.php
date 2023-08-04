@@ -73,6 +73,7 @@ Giỏ hàng | E-Shopper
         </div>
 
     </div>
+    @if( $items_order && count($items_order))
     <div class="row px-xl-5">
         <div class="col-lg-4">
             <div class="card border-secondary mb-5">
@@ -89,6 +90,7 @@ Giỏ hàng | E-Shopper
             </div>
         </div>
     </div>
+    @endif
 </div>
 <!-- Cart End -->
 @endsection

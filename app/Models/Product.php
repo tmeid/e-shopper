@@ -10,12 +10,25 @@ use App\Models\ProductItem;
 use App\Models\ProductImg;
 use App\Models\Order;
 use App\Models\ProductComment;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     public $timestamps = false;
-    protected $fillable = ['name', 'brand_id', 'category_id', 'description', 'content', 'quantity', 'featured', 'qty_sold', 'price', 'discount'];
+    protected $fillable = [
+        'name', 
+        'slug',
+        'brand_id', 
+        'category_id', 
+        'description', 
+        'content', 
+        'quantity', 
+        'featured', 
+        'qty_sold', 
+        'price', 
+        'discount'
+    ];
   
 
     public function brand(){

@@ -8,6 +8,8 @@ use App\Models\PaymentMethod;
 use App\Models\OrderStatus;
 use App\Models\Product;
 use App\Models\Address;
+use App\Models\ProductItem;
+use App\Models\User;
 
 class Order extends Model
 {
@@ -27,9 +29,9 @@ class Order extends Model
         return $this->belongsTo(OrderStatus::class, 'order_status_id', 'id');
     }
 
-    public function productItems(){
-        return $this->belongsToMany(Product::class, 'order_details', 'order_id', 'product_id');
-    }
+    // public function productItems(){
+    //     return $this->belongsToMany(Product::class, 'order_details', 'order_id', 'product_id');
+    // }
 
     public function address(){
         return $this->belongsTo(Address::class, 'address_id', 'id');
@@ -41,6 +43,10 @@ class Order extends Model
 
     public function prodItems(){
         return $this->belongsToMany(ProductItem::class, 'order_details', 'order_id', 'product_item_id')->withPivot('price', 'quantity');
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id', 'id')->withTrashed();
     }
 
     

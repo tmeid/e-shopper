@@ -22,7 +22,7 @@ Chi tiết đơn hàng
 
 
                 <div class="position-relative row">
-                    <label for="" class="col-md-3 text-md-right col-form-label">id</label>
+                    <label for="" class="col-md-3 text-md-right col-form-label">id:</label>
                     <div class="col-md-9 col-xl-8 col-form-label">
                         <p>{{ $order->id }}</p>
                     </div>
@@ -35,7 +35,7 @@ Chi tiết đơn hàng
 
                         @foreach($order->prodItems as $prodItem)
                         <p>
-                        {{ $prodItem->product->name .': ' .$prodItem->pivot->price .' x ' .$prodItem->pivot->quantity  }}
+                        {{ $prodItem->product->name .' (size ' .$prodItem->size .', màu ' .$prodItem->color  .')' .': ' .$prodItem->pivot->price .' x ' .$prodItem->pivot->quantity .' cái'  }}
                         </p>
                         @endforeach
 
@@ -43,9 +43,51 @@ Chi tiết đơn hàng
                 </div>
 
                 <div class="position-relative row">
-                    <label for="" class="col-md-3 text-md-right col-form-label">Tổng tiền</label>
+                    <label for="" class="col-md-3 text-md-right col-form-label">Tổng tiền:</label>
                     <div class="col-md-9 col-xl-8 col-form-label">
-                        <p>{{ $order->order_total .' đ' }}</p>
+                        <p>{{ number_format($order->order_total, 0, null, '.') .' đ' }}</p>
+                    </div>
+                </div>
+
+                <div class="position-relative row">
+                    <label for="" class="col-md-3 text-md-right col-form-label">Người đặt hàng:</label>
+                    <div class="col-md-9 col-xl-8 col-form-label">
+                        <p>{{ $order->user->name }}</p>
+                    </div>
+                </div>
+
+                <div class="position-relative row">
+                    <label for="" class="col-md-3 text-md-right col-form-label">Địa chỉ:</label>
+                    <div class="col-md-9 col-xl-8 col-form-label">
+                        <p>{{ $order->address->address }}</p>
+                    </div>
+                </div>
+
+                <div class="position-relative row">
+                    <label for="" class="col-md-3 text-md-right col-form-label">Số điện thoại:</label>
+                    <div class="col-md-9 col-xl-8 col-form-label">
+                        <p>{{ $order->user->phone }}</p>
+                    </div>
+                </div>
+
+                <div class="position-relative row">
+                    <label for="" class="col-md-3 text-md-right col-form-label">Hình thức thanh toán:</label>
+                    <div class="col-md-9 col-xl-8 col-form-label">
+                        <p>{{ $order->paymentMethod->name }}</p>
+                    </div>
+                </div>
+
+                <div class="position-relative row">
+                    <label for="" class="col-md-3 text-md-right col-form-label">Ngày đặt hàng:</label>
+                    <div class="col-md-9 col-xl-8 col-form-label">
+                        <p>{{ date('d-m-Y H:i:s', strtotime($order->created_at)) }}</p>
+                    </div>
+                </div>
+
+                <div class="position-relative row">
+                    <label for="" class="col-md-3 text-md-right col-form-label">Trạng thái đơn hàng:</label>
+                    <div class="col-md-9 col-xl-8 col-form-label">
+                        <p>{{ $order->orderStatus->status }}</p>
                     </div>
                 </div>
 

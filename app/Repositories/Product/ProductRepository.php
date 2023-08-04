@@ -10,6 +10,15 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     public function getModel(){
         return Product::class;
     }
+
+    public function getId($data){
+        $product = $this->model->where($data)->first();
+        if($product){
+             return $product->id;
+        }
+        return null;
+    }
+    
     public function getVariationItems($product_id, $variation){
         $productItems = $this->model->find($product_id)->productItems;
 
@@ -40,31 +49,15 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         return $this->model->where('category_id', $category_id)->where('featured', 1)->limit($limit)->get();
     }
 
+    // use in soft delete: restore and force delete 
+    public function getTrashedProduct($id){
+        return $this->model->onlyTrashed()->find($id);
+    }
+    public function findWithTrashedProduct($id){
+        return $this->model->withTrashed()->find($id);
+    }
+
     public function productPaginate($request, $category_id = null){
-        // if($sort_by){
-        //     if(strpos($sort_by, '-') !== false){
-        //         $sortBy = explode('-', $sort_by);
-        //         $sortByKey = $sortBy[0];
-        //         $sortDirection = $sortBy[1];
-
-        //         if($sortByKey == 'price'){
-        //             return $this->model
-        //                         ->orderBy(DB::raw("IF(discount > 0, (1 - discount)*price, price)"), $sortDirection)
-        //                         ->paginate($perPage)
-        //                         ->withQueryString();
-        //         }else{
-        //             return $this->model->orderBy($sortByKey, $sortDirection)->paginate($perPage)->withQueryString();
-        //         }
-        //     }else{
-        //         // sort latest product
-        //         if($sort_by == 'latest'){
-        //             return $this->model->orderBy('created_at', 'desc')->paginate($perPage)->withQueryString();
-        //         }
-        //     }             
-        // }else{
-        //     return $this->model->paginate($perPage)->withQueryString();
-        // }
-
         // filter key hold data
         $search = null;
         $categoryFilter = null;
@@ -86,7 +79,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
 
         if(!empty($request->search)){
             // validate $search later
-            $search = $request->search;
+            $search = trim($request->search);
             $search_pattern =  str_replace(' ', '%', $request->search);
 
             $productsQuery = $this->model->where('name', 'like', "%$search_pattern%");
@@ -146,7 +139,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         // sort
         switch($sort_by){
             case 'latest':
-                $query = $productsQuery->orderBy('created_at', 'asc');
+                $query = $productsQuery->orderBy('created_at', 'desc');
                 break;
             case 'price-asc':
                 $query = $productsQuery->orderBy(DB::raw("IF(discount > 0, (1 - discount)*price, price)"), 'asc');
@@ -172,6 +165,63 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                 'colorFilter' => $colorFilter,
                 'minPrice' => $minPrice,
                 'maxPrice' => $maxPrice
+            ];
+        
+    }
+
+    public function productAdminPaginate($request){
+        // filter key hold data
+        $search = null;
+        $perPage = 10;
+
+        if(!empty($request->search)){
+            // validate $search later
+            $search = trim($request->search);
+            $search_pattern =  str_replace(' ', '%', $search);
+
+            $productsQuery = $this->model->where(function($query) use ($search_pattern){
+                $query->where('name', 'like', "%$search_pattern%");
+                $query->orWhere('price', 'like', "%$search_pattern%");
+                $query->orWhere('qty_sold', 'like', "%$search_pattern%");
+                $query->orWhere('discount', 'like', "%$search_pattern%");
+
+            });
+        }else{
+            $productsQuery = $this->model;
+        }
+
+
+        // sort by 
+        if(!empty($request->sort_by)){
+            $sort_by = trim($request->sort_by);
+        }else{
+            $sort_by = 'latest';
+        }
+        // sort
+        switch($sort_by){
+            case 'latest':
+                $query = $productsQuery->orderBy('created_at', 'desc');
+                break;
+            case 'price-asc':
+                $query = $productsQuery->orderBy('price', 'asc');
+                break;
+            case 'price-desc':
+                $query = $productsQuery->orderBy('price', 'desc');
+                break;
+            case 'name-asc':
+                $query = $productsQuery->orderBy('name', 'asc');
+                break;
+            case 'name-desc':
+                $query = $productsQuery->orderBy('name', 'desc');
+                break;
+            default:
+                $query = $productsQuery->orderBy('id', 'asc');
+        }
+        
+        return [
+                'products' => $query->withTrashed()->paginate($perPage)->withQueryString(),
+                'search' => $search,
+                'sort_by' => $sort_by
             ];
         
     }

@@ -15,8 +15,11 @@ class AdminOrderController extends Controller
         $this->orderRepo = $orderRepo;
     }
 
-    public function index(){
-        $orders = $this->orderRepo->getAll();
+    public function index(Request $request){
+        $ordersResult = $this->orderRepo->orderPaginate($request);
+        $orders = $ordersResult['orders'];
+        $search = $ordersResult['search'];
+        $filter_by = $ordersResult['filterBy'];
         return view('admin.order.index')->with('orders', $orders);
     }
 

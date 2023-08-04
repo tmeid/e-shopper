@@ -7,7 +7,7 @@
 @section('content')
 <!-- Shop Detail Start -->
 
-<div class="container-fluid py-5">
+<div class="container py-5">
     <div class="row px-xl-5">
         <div class="col-lg-5 pb-5">
             <div id="product-carousel" class="carousel slide" data-ride="carousel">
@@ -15,11 +15,11 @@
                     @php 
                     $prodImgs = $productImgs->where('product_id', $product->id);
                     @endphp
-                    @foreach($prodImgs as $prodImg)
+                    <!-- @foreach($prodImgs as $prodImg) -->
                     <div class="carousel-item active">
-                        <img class="w-100 h-100" src="{{ asset('imgs/products/' .$prodImg->path) }}" alt="Image">
+                        <img class="w-100 h-100" src="{{ asset('imgs/products/' .$prodImgs->first()->path) }}" alt="Image">
                     </div>
-                    @endforeach
+                    <!-- @endforeach -->
                 </div>
                 <!-- <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
                     <i class="fa fa-2x fa-angle-left text-dark"></i>
@@ -186,13 +186,13 @@
         @foreach($relatedProducts as $relatedProduct)
         <div class="col-lg-3 col-md-6 col-sm-12 card product-item border-0">
             <div class="product-img overflow-hidden bg-transparent border p-0">
-                <a class="text-decoration-none" href="{{ route('product.detail', ['product' => $relatedProduct]) }}">
+                <a class="text-decoration-none" href="{{ route('product.detail', ['product' => $relatedProduct->slug]) }}">
                     <img class="img-fluid w-100" src="{{ asset('imgs/products/' .$relatedProduct->productImgs->first()->path) }}" alt="">
                 </a>
 
             </div>
             <div class="border text-center p-0 pt-4 pb-3 mb-3">
-                <h6 class="text-truncate mb-3"><a class="text-decoration-none" href="{{ route('product.detail', ['product' => $relatedProduct]) }}">{{ $relatedProduct->name }}</a></h6>
+                <h6 class="text-truncate mb-3"><a class="text-decoration-none" href="{{ route('product.detail', ['product' => $relatedProduct->slug]) }}">{{ $relatedProduct->name }}</a></h6>
                 <div class="d-flex justify-content-center">
                     @if(!empty($relatedProduct->discount))
                     <h6>{{ salePrice($relatedProduct->discount, $relatedProduct->price) }}đ</h6>

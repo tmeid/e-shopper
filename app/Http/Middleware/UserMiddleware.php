@@ -22,7 +22,7 @@ class UserMiddleware
             return redirect()->route('login');
         }
 
-        // đăng nhập nhưng sai quyền, logout và redirect đăng nhập lại
+        // admin truy cập vào trang của user
         if(Auth::user()->role !== 0){
             return redirect()->route('home');
         }

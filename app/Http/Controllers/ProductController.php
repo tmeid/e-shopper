@@ -42,12 +42,19 @@ class ProductController extends Controller
         $this->productImgrepo = $productImgRepo;
     }
 
-    public function index(Product $product)
+    public function index($slug)
     {
-        $id = $product->id;
+        $id = $this->productRepository->getId(['slug' => $slug]);
+        
         $categories = $this->categoryRepo->getAll();
         $product = $this->productRepository->find($id);
-        $product_item = $product->productItems;
+        
+        if($product){
+            $product_item = $product->productItems;
+        }else{
+            return view('errors.404');
+        }
+        
         $productImgs = $this->productImgrepo->getAll();
 
         // count the number of cart items

@@ -18,18 +18,26 @@ class ProductImgController extends Controller
         
     }
     public function index($product_id){
-        $productImgs = $this->productRepo->find($product_id)->productImgs;
-        return view('admin.product.img.index')->with(['productImgs' => $productImgs, 'product_id' => $product_id]);
+        $product = $this->productRepo->find($product_id);
+        if($product){
+            $productImgs = $product->productImgs;
+            return view('admin.product.img.index')->with(['productImgs' => $productImgs, 'product_id' => $product_id]);
+        }else{
+            return redirect()->route('admin.product.list')->with(['msg' => 'Không tồn tại hoặc cần khôi phục để thực hiện', 'type' => 'danger']);
+        }
+        
     }
 
     public function upload(Request $request, $product_id){
         if($request->hasFile('upload_image')){
             $destinationPath = 'imgs/products';
-            $myimage = $request->upload_image->getClientOriginalName();
-            $request->upload_image->move(public_path($destinationPath), $myimage);
+            $imgs = $request->upload_image;
             
-    
-            ProductImg::create(['product_id' => $product_id, 'path' => $myimage]);
+            foreach($imgs as $img){
+                $myimage = $img->getClientOriginalName();
+                $img->move(public_path($destinationPath), $myimage);               
+                ProductImg::create(['product_id' => $product_id, 'path' => $myimage]);
+            }           
         }
         return redirect()->back();
     }

@@ -183,6 +183,10 @@
 *::after {
   box-sizing: border-box;
 }
+.custom-dropdown-menu{
+  right: initial!important;
+  left: 0;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   :root {

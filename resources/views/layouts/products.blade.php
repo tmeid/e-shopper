@@ -261,12 +261,12 @@ Tất cả sản phẩm | E-shopper
                 @foreach($products as $product)
                 <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
                     <div class="product-img overflow-hidden bg-transparent border p-0">
-                        <a class="text-decoration-none" href="{{ route('product.detail', ['product' => $product] )}}">
+                        <a class="text-decoration-none" href="{{ route('product.detail', ['product' => $product->slug] )}}">
                             <img class="img-fluid w-100" src="{{ asset('imgs/products/' .$product->productImgs->first()->path) }}" alt="">
                         </a>
                     </div>
                     <div class="border text-center p-0 pt-4 pb-3 mb-3">
-                        <h6 class="text-truncate mb-3"><a class="text-decoration-none" style="color:#1C1C1C;" href="{{ route('product.detail', ['product' => $product] )}}">{{ $product->name }}</a></h6>
+                        <h6 class="text-truncate mb-3"><a class="text-decoration-none" style="color:#1C1C1C;" href="{{ route('product.detail', ['product' => $product->slug] )}}">{{ $product->name }}</a></h6>
                         <div class="d-flex justify-content-center">
                             @if($product->discount != null)
                             <h6>{{ salePrice($product->discount, $product->price) }}đ

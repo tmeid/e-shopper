@@ -13,7 +13,7 @@ Thêm sản phẩm | E-shopper
     <h2>Thêm sản phẩm</h2>
     <div class="row">
         <div class="col-12">
-            <form action="" method="POST">
+            <form action="" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <label for="name">Tên</label>
@@ -34,6 +34,12 @@ Thêm sản phẩm | E-shopper
                     @endforeach
                     @endif
                 </select>
+
+                <label for="imgs">Ảnh</label>
+                @error('upload_image')
+                <span class="text-danger">{{ $message }}</span>
+                @enderror
+                <input type="file" class="form-control" name="upload_image[]" id="imgs" multiple>
 
 
                 <label for="category">Danh mục</label>
@@ -79,7 +85,7 @@ Thêm sản phẩm | E-shopper
                 @enderror
                 <input class="form-control" type="text" id="discount" placeholder="Discount" name="discount" value="{{ old('discount') }}">
                 
-                <input type="checkbox" name="featured" value="1" id="featured">
+                <input type="checkbox" name="featured" value="1" id="featured" {{ old('featured') == 1 ? 'checked' : '' }}>
                 <label for="featured">Featured</label>
                 <br>
 

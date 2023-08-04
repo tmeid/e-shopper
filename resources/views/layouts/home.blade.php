@@ -82,10 +82,10 @@ E-Shopper | Trang chủ
         <div class="col-lg-4 col-md-6 pb-1">
             <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
                 <p class="text-right">{{ $category->products_count }} sản phẩm</p>
-                <a class="text-decoration-none" href="{{ route('shop.category', ['id' => $category->id ]) }}" class="cat-img position-relative overflow-hidden mb-3">
+                <a class="text-decoration-none" href="{{ route('shop.category', ['category' => $category->slug ]) }}" class="cat-img position-relative overflow-hidden mb-3">
                     <img class="img-fluid" src="{{ asset('imgs/products/' .$productImgs->where('product_id', $category->products->first()->id)->first()->path )}}" alt="">
                 </a>
-                <h5 class="p-3 text-center"><a class="text-decoration-none font-weight-semi-bold m-0" style="color:#1C1C1C;" href="{{ route('category', ['id' => $category->id ]) }}">{{ $category->name }}</a></h5>
+                <h5 class="p-3 text-center"><a class="text-decoration-none font-weight-semi-bold m-0" style="color:#1C1C1C;" href="{{ route('shop.category', ['category' => $category->slug]) }}">{{ $category->name }}</a></h5>
             </div>
         </div>
         @endforeach
@@ -107,13 +107,13 @@ E-Shopper | Trang chủ
         @foreach($featuredProds as $featuredProduct)
             <div class="col-lg-3 col-md-6 col-sm-12 card product-item border-0">
                 <div class="product-img overflow-hidden bg-transparent border p-0">
-                    <a class="text-decoration-none" href="{{ route('product.detail', ['product' => $featuredProduct]) }}">
+                    <a class="text-decoration-none" href="{{ route('product.detail', ['product' => $featuredProduct->slug]) }}">
                         <img class="img-fluid w-100" src="{{ asset('imgs/products/' .$featuredProduct->productImgs->first()->path) }}" alt="">
                     </a>
                     
                 </div>
                 <div class="border text-center p-0 pt-4 pb-3 mb-3">
-                    <h6 class="text-truncate mb-3"><a class="text-decoration-none" style="color:#1C1C1C;" href="{{ route('product.detail', ['product' => $featuredProduct]) }}">{{ $featuredProduct->name }}</a></h6>
+                    <h6 class="text-truncate mb-3"><a class="text-decoration-none" style="color:#1C1C1C;" href="{{ route('product.detail', ['product' => $featuredProduct->slug]) }}">{{ $featuredProduct->name }}</a></h6>
                     <div class="d-flex justify-content-center">
                         @if(!empty($featuredProduct->discount))
                         <h6>{{ salePrice($featuredProduct->discount, $featuredProduct->price) }}đ</h6>

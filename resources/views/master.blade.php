@@ -9,8 +9,7 @@
     <meta content="Free HTML Templates" name="description">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
     <!-- Google Web Fonts -->
     <link href="{{ asset('vendor/css/fonts.css') }}" rel="stylesheet">
@@ -27,6 +26,7 @@
 
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('vendor/js/jquery.min.js') }}"></script>
+
     @yield('css')
 </head>
 
@@ -77,13 +77,13 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
-                            <a href="index.html" class="nav-item nav-link active">Trang chủ</a>
+                            <a href="{{ route('home') }}" class="nav-item nav-link active">Trang chủ</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Danh mục</a>
                                 <div class="dropdown-menu rounded-0 m-0">
                                     @if(count($categories))
                                     @foreach($categories as $category)
-                                        <a href="{{ route('shop.category', ['id' => $category->id]) }}" class="dropdown-item">{{ $category->name }}</a>
+                                        <a href="{{ route('shop.category', ['category' => $category->slug]) }}" class="dropdown-item">{{ $category->name }}</a>
                                     @endforeach
                                     @endif
                                    
@@ -110,7 +110,7 @@
                                     {{ Auth::user()->name }}
                                 </a>
 
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <div class="dropdown-menu custom-dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ Auth::user()->role === 1 ? route('admin.index') : route('user.index') }}">
                                         {{ __('Tài khoản') }}
                                     </a>
@@ -141,38 +141,30 @@
     <footer class="container-fluid bg-secondary text-dark mt-5 pt-5">
         <div class="row px-xl-5 pt-5">
             <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
-                <a href="" class="text-decoration-none">
+                <a href="{{ route('home') }}" class="text-decoration-none">
                     <h1 class="mb-4 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border border-white px-3 mr-1">E</span>Shopper</h1>
                 </a>
                 <p>Chúng tôi luôn cố gắng giúp mọi người hướng đến sự tự tin, sang trọng và thanh lịch trong cuộc sống</p>
-                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Nguyen Luong Bang, Da Nang</p>
-                <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>eshopper@example.com</p>
+                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Nguyễn Lương Bằng, Đà Nẵng</p>
+                <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>eshopper@gmail.com</p>
                 <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
             </div>
             <div class="col-lg-8 col-md-12">
                 <div class="row">
                     <div class="col-md-4 mb-5">
-                        <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
+                        <h5 class="font-weight-bold text-dark mb-4">Links</h5>
                         <div class="d-flex flex-column justify-content-start">
                             <a class="text-dark mb-2" href="{{ route('home') }}"><i class="fa fa-angle-right mr-2"></i>Trang chủ</a>
                             <a class="text-dark mb-2" href="{{ route('shop.products') }}"><i class="fa fa-angle-right mr-2"></i>Shop now</a>
                         </div>
-                    </div>
-                    <div class="col-md-4 mb-5">
-                        <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
-                        <div class="d-flex flex-column justify-content-start">
-                            <a class="text-dark mb-2" href="{{ route('home') }}"><i class="fa fa-angle-right mr-2"></i>Trang chủ</a>
-                            <a class="text-dark mb-2" href="{{ route('shop.products') }}"><i class="fa fa-angle-right mr-2"></i>Shop now</a>
-                        </div>
-                    </div>
-                
+                    </div>               
                 </div>
             </div>
         </div>
         <div class="row border-top border-light mx-xl-5 py-4">
             <div class="col px-xl-0">
                 <p class="mb-md-0 text-center text-md-left text-dark">
-                    &copy; <a class="text-dark font-weight-semi-bold" href="#">E-Shopper</a>. All Rights Reserved. Designed
+                    &copy; <a class="text-dark font-weight-semi-bold" href="{{ route('home') }}">E-Shopper</a>. All Rights Reserved. Designed
                     by <a class="text-dark font-weight-semi-bold" href="https://htmlcodex.com">HTML Codex. </a>
                     Customized by Diem Thuy Huynh
                 </p>
