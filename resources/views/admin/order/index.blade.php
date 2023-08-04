@@ -35,50 +35,51 @@ Thêm danh mục | E-shopper
         <option value="5" {{ request('filter_by') === '5' ? 'selected' : '' }}>Đã huỷ</option>
     </select>
 </form>
+<div style="overflow-x:auto;">
+    <table class="table table-bordered" style="color:#000">
+        <thead>
+            <tr>
+                <th>#id</th>
+                <th>Tổng bill</th>
+                <th>Trạng thái</th>
+                <th>Đổi trạng thái</th>
+                <th>Xem</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if(count($orders))
+            @foreach($orders as $order)
+            <tr>
+                <td>{{ $order->id }}</td>
+                <td>{{ number_format($order->order_total, 0, null, '.') .' đ' }}</td>
+                <td>{{ $order->orderStatus->status }}</td>
+                <td>
+                    <form action="{{ route('admin.order.changeStatus', ['id' => $order->id] )}}" method="POST">
+                        @csrf
 
-<table class="table table-bordered" style="color:#000">
-    <thead>
-        <tr>
-            <th>#id</th>
-            <th>Tổng bill</th>
-            <th>Trạng thái</th>
-            <th>Đổi trạng thái</th>
-            <th>Xem</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if(count($orders))
-        @foreach($orders as $order)
-        <tr>
-            <td>{{ $order->id }}</td>
-            <td>{{ number_format($order->order_total, 0, null, '.') .' đ' }}</td>
-            <td>{{ $order->orderStatus->status }}</td>
-            <td>
-                <form action="{{ route('admin.order.changeStatus', ['id' => $order->id] )}}" method="POST">
-                    @csrf
+                        <select name="order_status_id" id="">
+                            <option value="1" {{$order->order_status_id == 1 ? 'selected' : '' }}>Chờ xử lý</option>
+                            <option value="2" {{$order->order_status_id == 2 ? 'selected' : '' }}>Đang vận chuyển</option>
+                            <option value="3" {{$order->order_status_id == 3 ? 'selected' : '' }}>Đang giao</option>
+                            <option value="4" {{$order->order_status_id == 4 ? 'selected' : '' }}>Đã giao</option>
+                            <option value="5" {{$order->order_status_id == 5 ? 'selected' : ''  }}>Đã huỷ</option>
+                        </select>
+                        <input type="submit" name="submit">
 
-                    <select name="order_status_id" id="">
-                        <option value="1" {{$order->order_status_id == 1 ? 'selected' : '' }}>Chờ xử lý</option>
-                        <option value="2" {{$order->order_status_id == 2 ? 'selected' : '' }}>Đang vận chuyển</option>
-                        <option value="3" {{$order->order_status_id == 3 ? 'selected' : '' }}>Đang giao</option>
-                        <option value="4" {{$order->order_status_id == 4 ? 'selected' : '' }}>Đã giao</option>
-                        <option value="5" {{$order->order_status_id == 5 ? 'selected' : ''  }}>Đã huỷ</option>
-                    </select>
-                    <input type="submit" name="submit">
+                </td>
+                <td><a href="{{ route('admin.order.detail', ['id' => $order->id])}}">Chi tiết</a></td>
 
-            </td>
-            <td><a href="{{ route('admin.order.detail', ['id' => $order->id])}}">Chi tiết</a></td>
+            </tr>
+            @endforeach
+            @else
+            <tr>
+                <td colspan="2">Dữ liệu trống</td>
+            </tr>
+            @endif
 
-        </tr>
-        @endforeach
-        @else
-        <tr>
-            <td colspan="2">Dữ liệu trống</td>
-        </tr>
-        @endif
-
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</div>
 <div class="col-12 pb-1 d-flex justify-content-center pt-3">
     {{$orders->links() }}
 </div>

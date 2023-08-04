@@ -91,30 +91,27 @@ Admin Dashboard
                     @endif
                 </td>
                 <td style="text-align: center;">
-                        @if(!$product->trashed())
-                        <a href="{{ route('admin.product.sortDelete', ['product' => $product]) }}" 
-                            class="" style="font-size: 15px;"
-                            onclick="return confirm('Bạn có chắc chắn tạm xoá?')"
-                        >
-                            <i class="fa fa-trash-can" style="color:green;"></i>
-                        </a>
-                        @endif
-                    </td>
-                    <td style="text-align: center;">
-                        @if($product->trashed())
-                        <a href="{{ route('admin.product.restore', ['id' => $product->id]) }}" class="" style="font-size: 15px;"><i class="fa fa-undo"></i></a>
-                        @endif
-                    </td>
-                    <td style="text-align: center;">
-                        @if($product->trashed())
-                        <form action="{{ route('admin.product.forceDelete') }}" method="POST">
-                            @csrf 
-                            @method('DELETE')
-                            <input type="hidden" name="id" value="{{ $product->id }}">
-                            <button style="border: none;" type="submit"><i class="fa fa-trash-can" style="color:red;"></i></button>
-                        </form>
-                        @endif
-                    </td>
+                    @if(!$product->trashed())
+                    <a href="{{ route('admin.product.sortDelete', ['product' => $product]) }}" class="" style="font-size: 15px;" onclick="return confirm('Bạn có chắc chắn tạm xoá?')">
+                        <i class="fa fa-trash-can" style="color:green;"></i>
+                    </a>
+                    @endif
+                </td>
+                <td style="text-align: center;">
+                    @if($product->trashed())
+                    <a href="{{ route('admin.product.restore', ['id' => $product->id]) }}" class="" style="font-size: 15px;"><i class="fa fa-undo"></i></a>
+                    @endif
+                </td>
+                <td style="text-align: center;">
+                    @if($product->trashed())
+                    <form action="{{ route('admin.product.forceDelete') }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <input type="hidden" name="id" value="{{ $product->id }}">
+                        <button style="border: none;" type="submit"><i class="fa fa-trash-can" style="color:red;"></i></button>
+                    </form>
+                    @endif
+                </td>
 
 
 

@@ -17,6 +17,7 @@ use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\AdminOrderController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\SubProductController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 
@@ -82,6 +83,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
         Route::post('/{product_id}/image', [ProductImgController::class, 'upload'])->name('uploadProductImg');
         Route::get('/{product_id}/image/{product_img_id}', [ProductImgController::class, 'delete'])->name('deleteImg');
 
+        // subitem
         Route::get('/{product_id}/sub-items', [SubProductController::class, 'showSubItems'])->name('showSubItems');
         Route::get('/{product}/sub-item/{sub_item}', [SubProductController::class, 'showSubItem'])->name('showSubItem');  
         Route::post('/{product}/sub-item/{sub_item}', [SubProductController::class, 'editSubItem'])->name('editSubItem');
@@ -89,6 +91,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
         Route::post('/{product}/sub-item', [SubProductController::class, 'postAddSubItem'])->name('postAddSubItem');
 
         // delete subitem
+        Route::get('/{product}/sub-item/delete/{sub_item}', [SubProductController::class, 'delete'])->name('sortDeleteSub');
+        Route::get('/{product}/sub-item/restore/{id}', [SubProductController::class, 'restore'])->name('restoreSub');
+        Route::delete('/{product}/sub-item/force-delete', [SubProductController::class, 'forceDelete'])->name('forceDeleteSub');
     
     });
 
@@ -103,11 +108,23 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     // manage user
     Route::prefix('user')->name('user.')->group(function(){
         Route::get('/', [AdminUserController::class, 'index'])->name('list');
+
+        Route::get('/edit/{user}', [AdminUserController::class, 'edit'])->name('showFormEdit');
+        Route::post('/edit/{user}', [AdminUserController::class, 'postEdit'])->name('edit');
+        
         Route::get('/delete/{user}', [AdminUserController::class, 'delete'])->name('sortDelete');
         Route::get('/restore/{id}', [AdminUserController::class, 'restore'])->name('restore');
         Route::delete('/force-delete', [AdminUserController::class, 'forceDelete'])->name('forceDelete');
 
-        // edit user
+    });
+
+    Route::prefix('category')->name('category.')->group(function(){
+        Route::get('/', [AdminCategoryController::class, 'index'])->name('list');
+        Route::get('add', [AdminCategoryController::class, 'add'])->name('add');
+        Route::post('add', [AdminCategoryController::class, 'postAdd'])->name('postAdd');
+        Route::get('/edit/{category}', [AdminCategoryController::class, 'edit'])->name('showFormEdit');
+        Route::post('/edit/{category}', [AdminCategoryController::class, 'postEdit'])->name('edit');
+        Route::delete('/', [AdminCategoryController::class, 'delete'])->name('delete');
     });
    
 });

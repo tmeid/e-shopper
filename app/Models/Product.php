@@ -50,6 +50,6 @@ class Product extends Model
         return $this->belongsToMany(Order::class, 'order_details', 'product_id', 'order_id');
     }
     public function productItems(){
-        return $this->hasMany(ProductItem::class, 'product_id', 'id');
+        return $this->hasMany(ProductItem::class, 'product_id', 'id')->withTrashed();
     }
 }

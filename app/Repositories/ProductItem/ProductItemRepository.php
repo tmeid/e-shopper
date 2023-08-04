@@ -23,4 +23,10 @@ class ProductItemRepository extends BaseRepository implements ProductItemReposit
         
     }
 
+    // use in soft delete: restore and force delete 
+    public function getTrashed($id){
+        return $this->model->onlyTrashed()->find($id);
+    }
+    
+
 }

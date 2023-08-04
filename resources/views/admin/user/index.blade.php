@@ -16,13 +16,6 @@ Admin Dashboard
 
 <h3 class="mb-4">Quản lý người dùng</h3>
 
-@if(session('msg'))
-<p class="alert alert-{{ session('type') }}" style="width: 300px; margin: 0 auto;">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-    {{ session('msg') }}
-</p>
-@endif
-
 <div class="row">
     <form action="" class="col-lg-5 col-md-6 mb-3">
         <div class="input-group">
@@ -35,6 +28,12 @@ Admin Dashboard
         </div>
     </form>
 </div>
+@if(session('msg'))
+<p class="alert alert-{{ session('type') }}" style="width: 300px; margin: 0 auto 10px;">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+    {{ session('msg') }}
+</p>
+@endif
 
 <div style="overflow-x:auto;">
     <table class="table table-bordered" style="color:#000">
@@ -59,14 +58,15 @@ Admin Dashboard
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
                 <td>{{ $user->phone }}</td>
-                <td>{{  $user->role == 1 ? 'Admin' : 'User'}}</td>
-                <td style="text-align: center;"><a href="" class="" style="font-size: 15px;"><i class="fa fa-edit"></i></a></td>
+                <td>{{ $user->role == 1 ? 'Admin' : 'User'}}</td>
                 <td style="text-align: center;">
                     @if(!$user->trashed())
-                    <a href="{{ route('admin.user.sortDelete', ['user' => $user]) }}" 
-                        class="" style="font-size: 15px;"
-                        onclick="return confirm('Bạn có chắc chắn tạm xoá?')"
-                    >
+                    <a href="{{ route('admin.user.showFormEdit', ['user' => $user]) }}" class="" style="font-size: 15px;"><i class="fa fa-edit"></i></a>
+                    @endif
+                </td>
+                <td style="text-align: center;">
+                    @if(!$user->trashed())
+                    <a href="{{ route('admin.user.sortDelete', ['user' => $user]) }}" class="" style="font-size: 15px;" onclick="return confirm('Bạn có chắc chắn tạm xoá?')">
                         <i class="fa fa-trash-can" style="color:green;"></i>
                     </a>
                     @endif
@@ -79,7 +79,7 @@ Admin Dashboard
                 <td style="text-align: center;">
                     @if($user->trashed())
                     <form action="{{ route('admin.user.forceDelete') }}" method="POST">
-                        @csrf 
+                        @csrf
                         @method('DELETE')
                         <input type="hidden" name="id" value="{{ $user->id }}">
                         <button style="border: none;" type="submit"><i class="fa fa-trash-can" style="color:red;"></i></button>

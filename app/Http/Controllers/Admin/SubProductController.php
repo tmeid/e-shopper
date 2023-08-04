@@ -81,7 +81,7 @@ class SubProductController extends Controller
             $msg = 'Đã có lỗi xảy ra';
             $type = 'danger';
         }
-        return redirect()->route('admin.product.list')->with(['msg' => $msg, 'type' => $type]);
+        return redirect()->route('admin.product.showSubItems', ['product_id' => $product->id])->with(['msg' => $msg, 'type' => $type]);
     }
 
     public function showSubItem(Product $product, ProductItem $sub_item){
@@ -146,4 +146,51 @@ class SubProductController extends Controller
         }
         return redirect()->route('admin.product.list')->with(['msg' => $msg, 'type' => $type]);
     }
+
+    public function delete(Product $product, ProductItem $sub_item){
+        $id = $sub_item->id;
+        if($this->productItemRepo->find($id)){
+            $deletedNum = $this->productItemRepo->delete($id);
+            if($deletedNum){
+                $msg = 'Xoá mềm thành công';
+                $type = 'success';
+            }else{
+                $msg = 'Đã có lỗi xảy ra';
+                $type = 'danger';
+            }
+        }else{
+            abort('401');
+        }
+        return redirect()->route('admin.product.showSubItems', ['product_id' => $product->id])->with(['msg' => $msg, 'type' => $type]);
+       
+       
+    }
+
+    public function restore(Product $product, $id){
+        $trashedUser = $this->productItemRepo->getTrashed($id);
+        if($trashedUser){
+            $trashedUser->restore();
+            $msg = 'Khôi phục thành công';
+            $type = 'success';
+        }else{
+            $msg = 'Sản phẩm không tồn tại';
+            $type = 'danger';
+        }
+        return redirect()->route('admin.product.showSubItems', ['product_id' => $product->id])->with(['msg' => $msg, 'type' => $type]);
+    }
+
+    public function forceDelete(Product $product, Request $request){
+        $id = $request->id;
+        $trashedUser = $this->productItemRepo->getTrashed($id);
+        if($trashedUser){
+            $trashedUser->forceDelete();
+            $msg = 'Xoá thành công';
+            $type = 'success';
+        }else{
+            $msg = 'Sản phẩm không tồn tại';
+            $type = 'danger';
+        }
+        return redirect()->route('admin.product.showSubItems', ['product_id' => $product->id])->with(['msg' => $msg, 'type' => $type]);
+    }
+
 }
