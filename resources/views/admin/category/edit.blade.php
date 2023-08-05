@@ -1,7 +1,7 @@
 @extends('dashboard')
 
 @section('title')
-    Thêm danh mục | E-shopper
+   Sửa danh mục | E-shopper
 @endsection
 
 @section('dashboard-type')
@@ -13,14 +13,14 @@
 @endsection
 
 @section('content')
-<h3>Thêm danh mục</h3>
+<h3>Sửa danh mục</h3>
 <form action="" method="POST">
     <div class="form-group">
         <label for="name">Tên</label>
         @error('name')
         <span class="text-danger">{{ $message }}</span>
         @enderror
-        <input type="text" class="form-control" name="name" value="{{ old('name') }}" id="name" aria-describedby="emailHelp" placeholder="Tên...">
+        <input type="text" class="form-control" name="name" value="{{ old('name') ?? $category->name }}" id="name" aria-describedby="emailHelp" placeholder="Tên...">
     </div>
 
     <button type="submit" class="btn btn-primary" name="submit">Thêm</button>

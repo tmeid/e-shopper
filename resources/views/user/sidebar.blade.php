@@ -19,13 +19,26 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProduct" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOrder" aria-expanded="true" aria-controls="collapseOrder">
             <i class="fas fa-fw fa-cog"></i>
             <span>Đơn hàng</span>
         </a>
-        <div id="collapseProduct" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseOrder" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ route('user.order.order')}}">Tất cả đơn</a>
+            </div>
+        </div>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUserInfo" aria-expanded="true" aria-controls="collapseUserInfo">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Thông tin</span>
+        </a>
+        <div id="collapseUserInfo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="">Xem</a>
+                <a class="collapse-item" href="">Đổi mật khẩu</a>
             </div>
         </div>
     </li>

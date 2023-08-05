@@ -81,11 +81,13 @@ E-Shopper | Trang chủ
         @foreach($categoriesWithCountProduct as $category)
         <div class="col-lg-4 col-md-6 pb-1">
             <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
+                @if($category->products_count > 0)
                 <p class="text-right">{{ $category->products_count }} sản phẩm</p>
                 <a class="text-decoration-none" href="{{ route('shop.category', ['category' => $category->slug ]) }}" class="cat-img position-relative overflow-hidden mb-3">
                     <img class="img-fluid" src="{{ asset('imgs/products/' .$productImgs->where('product_id', $category->products->first()->id)->first()->path )}}" alt="">
                 </a>
                 <h5 class="p-3 text-center"><a class="text-decoration-none font-weight-semi-bold m-0" style="color:#1C1C1C;" href="{{ route('shop.category', ['category' => $category->slug]) }}">{{ $category->name }}</a></h5>
+                @endif
             </div>
         </div>
         @endforeach

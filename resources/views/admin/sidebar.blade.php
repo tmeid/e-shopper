@@ -65,7 +65,7 @@
         <div id="collapseCategory" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ route('admin.category.list') }}">Danh sách</a>
-                <a class="collapse-item" href="">Thêm</a>
+                <a class="collapse-item" href="{{ route('admin.category.add') }}">Thêm</a>
             </div>
         </div>
     </li>
@@ -77,8 +77,8 @@
         </a>
         <div id="collapseBrand" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="">Danh sách</a>
-                <a class="collapse-item" href="">Thêm</a>
+                <a class="collapse-item" href="{{ route('admin.brand.list') }}">Danh sách</a>
+                <a class="collapse-item" href="{{ route('admin.brand.add') }}">Thêm</a>
             </div>
         </div>
     </li>

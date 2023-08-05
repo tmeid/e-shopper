@@ -28,8 +28,18 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
        }
        return null;
     }
-    public function getCategories(){
-        return $this->model->get();
+    public function getCategories($request){
+        $search = null;
+        if(!empty($request->search)){
+            $search = trim($request->search);
+            $search_pattern = str_replace(' ', '%', $search);
+            $query = $this->model->where('name', 'like', "%$search_pattern%");
+        }else{
+            $query = $this->model;
+        }
+        // sort 
+        $query = $query->orderBy('created_at', 'DESC');
+        return $query->get();
     }
     
 }

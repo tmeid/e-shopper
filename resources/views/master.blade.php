@@ -83,8 +83,10 @@
                                 <div class="dropdown-menu rounded-0 m-0">
                                     @if(count($categories))
                                     @foreach($categories as $category)
+                                        @if(count($category->products) > 0)
                                         <a href="{{ route('shop.category', ['category' => $category->slug]) }}" class="dropdown-item">{{ $category->name }}</a>
-                                    @endforeach
+                                        @endif
+                                        @endforeach
                                     @endif
                                    
                                 </div>
@@ -144,7 +146,7 @@
                 <a href="{{ route('home') }}" class="text-decoration-none">
                     <h1 class="mb-4 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border border-white px-3 mr-1">E</span>Shopper</h1>
                 </a>
-                <p>Chúng tôi luôn cố gắng giúp mọi người hướng đến sự tự tin, sang trọng và thanh lịch trong cuộc sống</p>
+                <p>Chúng tôi luôn hướng đến sự tự tin, sang trọng và thanh lịch trong cuộc sống</p>
                 <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Nguyễn Lương Bằng, Đà Nẵng</p>
                 <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>eshopper@gmail.com</p>
                 <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>

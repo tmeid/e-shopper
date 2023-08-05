@@ -1,7 +1,7 @@
 @extends('dashboard')
 
 @section('title')
-    Thêm danh mục | E-shopper
+    Thêm thương hiệu| E-shopper
 @endsection
 
 @section('dashboard-type')
@@ -13,7 +13,7 @@
 @endsection
 
 @section('content')
-<h3>Thêm danh mục</h3>
+<h3>Thêm thương hiệu</h3>
 <form action="" method="POST">
     <div class="form-group">
         <label for="name">Tên</label>

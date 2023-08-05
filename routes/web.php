@@ -17,6 +17,7 @@ use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\AdminOrderController;
+use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\SubProductController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -125,6 +126,15 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
         Route::get('/edit/{category}', [AdminCategoryController::class, 'edit'])->name('showFormEdit');
         Route::post('/edit/{category}', [AdminCategoryController::class, 'postEdit'])->name('edit');
         Route::delete('/', [AdminCategoryController::class, 'delete'])->name('delete');
+    });
+
+    Route::prefix('brand')->name('brand.')->group(function(){
+        Route::get('/', [BrandController::class, 'index'])->name('list');
+        Route::get('add', [BrandController::class, 'add'])->name('add');
+        Route::post('add', [BrandController::class, 'postAdd'])->name('postAdd');
+        Route::get('/edit/{brand}', [BrandController::class, 'edit'])->name('showFormEdit');
+        Route::post('/edit/{brand}', [BrandController::class, 'postEdit'])->name('edit');
+        Route::delete('/', [BrandController::class, 'delete'])->name('delete');
     });
    
 });
