@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'failed' => 'Tài khoản không tồn tại.',
+    'failed' => 'Thông tin đăng nhập sai.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 
 ];

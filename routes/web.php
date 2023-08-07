@@ -142,6 +142,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 // user
 Route::prefix('user')->name('user.')->middleware(['auth', 'user'])->group(function(){
     Route::get('/', [UserController::class, 'index'])->name('index');
+    Route::get('/change-password', [UserController::class, 'showFormchangePass'])->name('showFormchangePass');
+    Route::post('/change-password', [UserController::class, 'changePass'])->name('changePass');
 
     Route::prefix('order')->name('order.')->group(function(){
         Route::get('/', [UserController::class, 'show'])->name('order');

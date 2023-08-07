@@ -6,6 +6,11 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Đăng nhập') }}</div>
+                @if(session('msg'))
+                    <p class="alert alert-{{ session('type') }}" style="text-align: center;">
+                        {{ session('msg') }}
+                    </p>
+                @endif
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
