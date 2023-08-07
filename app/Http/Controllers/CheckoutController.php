@@ -115,7 +115,7 @@ class CheckoutController extends Controller
                 // lưu thông tin order
                 $inserOrder = $this->orderRepo->create([
                     'user_id' => Auth::user()->id,
-                    'address_id' => $this->addressRepo->findId(['address' => $address, 'user_id' => $user_id]),
+                    'address' => $address,
                     'payment_method_id' => $payment_id,
                     'order_total' => $order_total,
                     'order_status_id' => 1

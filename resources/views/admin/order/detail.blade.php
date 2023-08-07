@@ -59,7 +59,7 @@ Chi tiết đơn hàng
                 <div class="position-relative row">
                     <label for="" class="col-md-3 text-md-right col-form-label">Địa chỉ:</label>
                     <div class="col-md-9 col-xl-8 col-form-label">
-                        <p>{{ $order->address->address }}</p>
+                        <p>{{ $order->address }}</p>
                     </div>
                 </div>
 
