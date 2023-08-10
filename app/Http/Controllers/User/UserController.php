@@ -26,17 +26,6 @@ class UserController extends Controller
         return view('user.index')->with('myOrder', $myOrder);
     }
 
-    public function show(){
-        $user_id = Auth::user()->id;
-        $myOrder = $this->orderRepo->getAllOrders(['user_id' => $user_id]);
-        return view('user.order.index')->with('myOrder', $myOrder);
-    }
-
-    public function detailOrder($id){
-        $order = $this->orderRepo->find($id);
-        return view('user.order.show')->with('order', $order);
-    }
-
     public function showFormchangePass(){
         return view('user.password.index');
     }

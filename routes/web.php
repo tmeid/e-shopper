@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\SubProductController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\User\AddressController;
+use App\Http\Controllers\User\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -159,8 +160,8 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'user'])->group(functi
     });
 
     Route::prefix('order')->name('order.')->group(function(){
-        Route::get('/', [UserController::class, 'show'])->name('order');
-        Route::get('/{id}', [UserController::class, 'detailOrder'])->name('show');
+        Route::get('/', [OrderController::class, 'show'])->name('order');
+        Route::get('/{id}', [OrderController::class, 'detailOrder'])->name('show');
     });
     
       

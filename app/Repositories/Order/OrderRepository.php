@@ -11,7 +11,7 @@ class OrderRepository extends BaseRepository implements OrderRepositoryInterface
         return Order::class;
     }
     public function getAllOrders($condition){
-        return $this->model->where($condition)->get();
+        return $this->model->where($condition)->orderBy('created_at', 'desc')->paginate(1);
     }
 
     public function countEachOrder($condition){
