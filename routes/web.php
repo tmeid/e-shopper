@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\SubProductController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\User\AddressController;
 
 /*
 |--------------------------------------------------------------------------
@@ -144,6 +145,18 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'user'])->group(functi
     Route::get('/', [UserController::class, 'index'])->name('index');
     Route::get('/change-password', [UserController::class, 'showFormchangePass'])->name('showFormchangePass');
     Route::post('/change-password', [UserController::class, 'changePass'])->name('changePass');
+
+    Route::prefix('address')->name('address.')->group(function(){
+        Route::get('/', [AddressController::class, 'address'])->name('index');
+        Route::post('/add', [AddressController::class, 'add'])->name('add');
+        Route::post('/{id}', [AddressController::class, 'edit'])->name('edit');
+        Route::delete('/{id}', [AddressController::class, 'delete']);
+    });
+
+    Route::prefix('info')->name('info.')->group(function(){
+        Route::get('/', [UserController::class, 'info'])->name('infoUser');
+        Route::post('/', [UserController::class, 'editInfo'])->name('editInfo');
+    });
 
     Route::prefix('order')->name('order.')->group(function(){
         Route::get('/', [UserController::class, 'show'])->name('order');

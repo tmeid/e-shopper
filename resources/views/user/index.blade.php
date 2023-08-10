@@ -10,10 +10,6 @@ Thêm danh mục | E-shopper
 @endsection
 
 @section('content')
-
-<h3>Chào mừng bạn đến với trang cá nhân</h3>
-<hr>
-
 @if(session('msg'))
 <p class="alert alert-{{ session('type') }}">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>

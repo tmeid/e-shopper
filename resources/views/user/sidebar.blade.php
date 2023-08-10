@@ -38,9 +38,9 @@
         </a>
         <div id="collapseUserInfo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="">Xem</a>
+                <a class="collapse-item" href="{{ route('user.info.infoUser') }}">Xem</a>
                 <a class="collapse-item" href="{{ route('user.showFormchangePass') }}">Đổi mật khẩu</a>
-                <a class="collapse-item" href="">Địa chỉ</a>
+                <a class="collapse-item" href="{{ route('user.address.index') }}">Địa chỉ</a>
             </div>
         </div>
     </li>

@@ -112,9 +112,9 @@ class ProductController extends Controller
                 if($product_detail){
                     return response()->json(['status' => true, 'product_detail' => $product_detail ]);
                 }
-                return response()->json(['status' => false, 'msg' => 'ở giữa']);
+                // return response()->json(['status' => false, 'msg' => 'ở giữa']);
             }
-            return response()->json(['status' => false, 'msg' => 'ở ngoài']);
+            // return response()->json(['status' => false, 'msg' => 'ở ngoài']);
         }
         return back();
         

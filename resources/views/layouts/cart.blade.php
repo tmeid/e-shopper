@@ -157,10 +157,10 @@ Giỏ hàng | E-Shopper
             cashes = document.querySelectorAll('.subtotal'),
             total = 0,
             totalItem = document.querySelector('.total');
-            qtyInputValue = qtyInput.value;
-        
+        qtyInputValue = qtyInput.value;
+
         cashItem.textContent = '₫' + (priceItemInt * qtyInputValue).toLocaleString("da-DK");
-        cashes.forEach((cash)=>{
+        cashes.forEach((cash) => {
             let cash_value = cash.textContent,
                 cash_value_int = +cash_value.replace(/[^0-9]/g, '');
             total += cash_value_int;
@@ -185,38 +185,17 @@ Giỏ hàng | E-Shopper
     });
 
     $(document).ready(function() {
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-
-    $('.change-qty').click(function(e) {
-        e.preventDefault();
-        let cart_items_id = $(this).closest('.product_data').find('.cart_items_id').val();
-        let qty = $(this).closest('.product_data').find('.quantity-input').val();
-
-        $.ajax({
-            method: 'POST',
-            url: '/update-cart',
-            data: {
-                cart_items_id: cart_items_id,
-                qty: qty
-            },
-            success: function(response) {
-
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-    });
 
-    $('.change-qty-input').click(function(e) {
-        e.preventDefault();
-        let cart_items_id = $(this).closest('.product_data').find('.cart_items_id').val();
-        let qty_item = $(this);
+        $('.change-qty').click(function(e) {
+            e.preventDefault();
+            let cart_items_id = $(this).closest('.product_data').find('.cart_items_id').val();
+            let qty = $(this).closest('.product_data').find('.quantity-input').val();
 
-        $('body').click(function(event) {
-            event.preventDefault();
-            let qty = qty_item.val();
             $.ajax({
                 method: 'POST',
                 url: '/update-cart',
@@ -229,50 +208,49 @@ Giỏ hàng | E-Shopper
                 }
             });
         });
-    });
 
-    $('.delete-btn').click(function(e) {
-        e.preventDefault();
-        let cart_items_id = $(this).closest('.product_data').find('.cart_items_id').val();
+        $('.change-qty-input').click(function(e) {
+            e.preventDefault();
+            let cart_items_id = $(this).closest('.product_data').find('.cart_items_id').val();
+            let qty_item = $(this);
 
-        $.ajax({
-            method: 'POST',
-            url: '/delete-cart-item',
-            data: {
-                cart_items_id: cart_items_id
-            },
-            success: function(response) {
-                if(response.status){
-                    window.location.reload();
-                }
-            }
+            $('body').click(function(event) {
+                event.preventDefault();
+                let qty = qty_item.val();
+                $.ajax({
+                    method: 'POST',
+                    url: '/update-cart',
+                    data: {
+                        cart_items_id: cart_items_id,
+                        qty: qty
+                    },
+                    success: function(response) {
+
+                    }
+                });
+            });
         });
 
-    })
-});
+        $('.delete-btn').click(function(e) {
+            e.preventDefault();
+            let cart_items_id = $(this).closest('.product_data').find('.cart_items_id').val();
 
+            $.ajax({
+                method: 'POST',
+                url: '/delete-cart-item',
+                data: {
+                    cart_items_id: cart_items_id
+                },
+                success: function(response) {
+                    if (response.status) {
+                        window.location.reload();
+                    }
+                }
+            });
 
+        })
+    });
 
-    // $(document).ready(function() {
-    //     // increase, decrease-btn btn 
-    //     $('.decrease-btn').on('click', function(){
-    //         let current_qty = parseInt($('.qty-btn').val(), 10) - 1;
-    //         if(current_qty  <= 0){
-    //             current_qty = 1;
-    //         }
-    //         $('.qty-btn').val(current_qty);
-    //     });
-
-    //     $('.increase-btn').on('click', function(){
-    //         let current_qty = parseInt($('.qty-btn').val(), 10) + 1,
-    //             maxQtyStock = parseInt($('.qty-stock').text(), 10);
-
-    //         if(current_qty  > maxQtyStock){
-    //             current_qty = maxQtyStock;
-    //         }
-    //         $('.qty-btn').val(current_qty);
-    //     });
-    // });
 </script>
 
 @endsection

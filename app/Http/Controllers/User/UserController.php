@@ -68,4 +68,15 @@ class UserController extends Controller
             return redirect()->route('user.showFormchangePass')->with(['msg' => $msg, 'type' => $type]);
         }
     }
+
+    public function info(){
+        $user = Auth::user();
+        return view('user.info.index')->with('user', $user);
+    }
+
+    public function editInfo(Request $request){
+
+    }
+
+   
 }
