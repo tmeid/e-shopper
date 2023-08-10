@@ -262,7 +262,7 @@ Tất cả sản phẩm | E-shopper
                 <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
                     <div class="product-img overflow-hidden bg-transparent border p-0">
                         <a class="text-decoration-none" href="{{ route('product.detail', ['product' => $product->slug] )}}">
-                            <img class="img-fluid w-100" src="{{ asset('imgs/products/' .$product->productImgs->first()->path) }}" alt="">
+                            <img class="img-fluid w-100" src="{{ asset('imgs/products/' .$product->productImgs->first()->path) }}" alt="{{ $product->name}}">
                         </a>
                     </div>
                     <div class="border text-center p-0 pt-4 pb-3 mb-3">

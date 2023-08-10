@@ -26,7 +26,7 @@ Giỏ hàng | E-Shopper
                         <input type="hidden" class="qty-stock-{{$item_order->id}}" value="{{ $item_order->quantity }}">
                         <input type="hidden" class="cart_items_id" value="{{ $item_order->pivot->id }}">
                         <td class="align-items-start d-flex flex-wrap">
-                            <img src="{{ asset('imgs/products/' .$item_order->noTrashedProduct->productImgs->first()->path) }}" alt="Image" style="width: 50px; display: block;">
+                            <img src="{{ asset('imgs/products/' .$item_order->noTrashedProduct->productImgs->first()->path) }}" alt="{{ $item_order->noTrashedProduct->name }}" style="width: 50px; display: block;">
                             <span class="mt-1 ml-2"><a style="color:#000" class="text-decoration-none" href="{{ route('product.detail', ['product' => $item_order->noTrashedProduct->id ])}}">{{ $item_order->noTrashedProduct->name }} ({{ 'Size: ' .$item_order->size .', màu: ' .$item_order->color }})</a></span>
                         </td>
                         <td class="align-middle">

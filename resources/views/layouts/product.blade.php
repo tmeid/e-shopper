@@ -17,7 +17,7 @@
                     @endphp
                     <!-- @foreach($prodImgs as $prodImg) -->
                     <div class="carousel-item active">
-                        <img class="w-100 h-100" src="{{ asset('imgs/products/' .$prodImgs->first()->path) }}" alt="Image">
+                        <img class="w-100 h-100" src="{{ asset('imgs/products/' .$prodImgs->first()->path) }}" alt="{{ $prodImg->product->name }}">
                     </div>
                     <!-- @endforeach -->
                 </div>
