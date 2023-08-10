@@ -72,10 +72,10 @@ class CheckoutController extends Controller
         $items_order = $this->cartRepository->getItemsPerUser($cart_id);
 
         foreach ($items_order as $item_order) {
-            if ($item_order->product->discount > 0) {
-                $price = (1 - $item_order->product->discount) * ($item_order->product->price) * ($item_order->pivot->quantity);
+            if ($item_order->noTrashedProduct->discount > 0) {
+                $price = (1 - $item_order->noTrashedProduct->discount) * ($item_order->noTrashedProduct->price) * ($item_order->pivot->quantity);
             } else {
-                $price = ($item_order->product->price) * ($item_order->pivot->quantity);
+                $price = ($item_order->noTrashedProduct->price) * ($item_order->pivot->quantity);
             }
             $totalPrice += $price;
         }

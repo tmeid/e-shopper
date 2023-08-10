@@ -21,6 +21,10 @@ class ProductItem extends Model
         return $this->belongsTo(Product::class, 'product_id', 'id')->withTrashed();
     }
 
+    public function noTrashedProduct(){
+        return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
+
     public function orders(){
         return $this->belongsToMany(Order::class, 'order_details', 'product_item_id', 'order_id');
     }

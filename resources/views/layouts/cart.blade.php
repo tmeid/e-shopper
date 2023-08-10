@@ -26,15 +26,15 @@ Giỏ hàng | E-Shopper
                         <input type="hidden" class="qty-stock-{{$item_order->id}}" value="{{ $item_order->quantity }}">
                         <input type="hidden" class="cart_items_id" value="{{ $item_order->pivot->id }}">
                         <td class="align-items-start d-flex flex-wrap">
-                            <img src="https://bizweb.dktcdn.net/thumb/1024x1024/100/399/392/products/6-2.png" alt="" style="width: 50px;">
-                            <span class="mt-1 ml-2"><a style="color:#000" class="text-decoration-none" href="{{ route('product.detail', ['product' => $item_order->product->id ])}}">{{ $item_order->product->name }} ({{ 'Size: ' .$item_order->size .', màu: ' .$item_order->color }})</a></span>
+                            <img src="{{ asset('imgs/products/' .$item_order->noTrashedProduct->productImgs->first()->path) }}" alt="Image" style="width: 50px; display: block;">
+                            <span class="mt-1 ml-2"><a style="color:#000" class="text-decoration-none" href="{{ route('product.detail', ['product' => $item_order->noTrashedProduct->id ])}}">{{ $item_order->noTrashedProduct->name }} ({{ 'Size: ' .$item_order->size .', màu: ' .$item_order->color }})</a></span>
                         </td>
                         <td class="align-middle">
-                            @if($item_order->product->discount > 0)
-                            <del style="font-size: 0.95rem" class="font-weight-light text-muted">₫{{ number_format(($item_order->product->price), 0, null, '.')}}</del>
-                            <span class="ml-2 inline-block price-{{$item_order->id}}">₫{{ number_format((1- $item_order->product->discount)*($item_order->product->price), 0, null, '.')}}</span>
+                            @if($item_order->noTrashedProduct->discount > 0)
+                            <del style="font-size: 0.95rem" class="font-weight-light text-muted">₫{{ number_format(($item_order->noTrashedProduct->price), 0, null, '.')}}</del>
+                            <span class="ml-2 inline-block price-{{$item_order->id}}">₫{{ number_format((1- $item_order->noTrashedProduct->discount)*($item_order->noTrashedProduct->price), 0, null, '.')}}</span>
                             @else
-                            <span class="price-{{$item_order->id}}">₫{{ number_format(($item_order->product->price), 0, null, '.') }}</span>
+                            <span class="price-{{$item_order->id}}">₫{{ number_format(($item_order->noTrashedProduct->price), 0, null, '.') }}</span>
                             @endif
 
                         </td>
@@ -56,10 +56,10 @@ Giỏ hàng | E-Shopper
                             </div>
                         </td>
                         <td class="align-middle cash-{{ $item_order->id }} subtotal">
-                            @if($item_order->product->discount > 0)
-                            ₫{{ number_format((1- $item_order->product->discount)*($item_order->product->price)*($item_order->pivot->quantity), 0, null, '.')}}
+                            @if($item_order->noTrashedProduct->discount > 0)
+                            ₫{{ number_format((1- $item_order->noTrashedProduct->discount)*($item_order->noTrashedProduct->price)*($item_order->pivot->quantity), 0, null, '.')}}
                             @else
-                            ₫{{ number_format(($item_order->product->price)*($item_order->pivot->quantity), 0, null, '.') }}
+                            ₫{{ number_format(($item_order->noTrashedProduct->price)*($item_order->pivot->quantity), 0, null, '.') }}
                             @endif
                         </td>
                         <td class="align-middle"><button class="btn btn-sm btn-primary delete-btn"><i class="fa fa-times"></i></button></td>

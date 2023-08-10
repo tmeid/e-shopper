@@ -35,7 +35,7 @@ Chi tiết đơn hàng
 
                         @foreach($order->prodItems as $prodItem)
                         <p>
-                        {{ $prodItem->product->name .' (size ' .$prodItem->size .', màu ' .$prodItem->color  .')' .': ' .$prodItem->pivot->price .' x ' .$prodItem->pivot->quantity .' cái'  }}
+                        {{ $prodItem->noTrashedProduct->name .' (size ' .$prodItem->size .', màu ' .$prodItem->color  .')' .': ' .$prodItem->pivot->price .' x ' .$prodItem->pivot->quantity .' cái'  }}
                         </p>
                         @endforeach
 
