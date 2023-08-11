@@ -16,10 +16,12 @@ class OrderController extends Controller
     {
        $this->orderRepo = $orderRepo; 
     }
-    public function show(){
+    public function show(Request $request){
         $user_id = Auth::user()->id;
-        $myOrder = $this->orderRepo->getAllOrders(['user_id' => $user_id]);
-        return view('user.order.index')->with('myOrder', $myOrder);
+        $myOrderResult = $this->orderRepo->getAllOrdersPaginate(['user_id' => $user_id], $request);
+        $myOrder = $myOrderResult['orders'];
+        $filter_by = $myOrderResult['filterBy'];
+        return view('user.order.index')->with(['myOrder' => $myOrder, 'filter_by' => $filter_by]);
     }
 
     public function detailOrder($id){

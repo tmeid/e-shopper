@@ -9,6 +9,15 @@ Thêm danh mục | E-shopper
 @endsection
 
 @section('content')
+<form action="" class="mb-3">
+    <select class="form-control" name="filter_by" id="" onchange="this.form.submit()" style="width:initial">
+        <option value="">Bộ lọc</option>
+        <option value="1" {{ request('filter_by') === '1' ? 'selected' : '' }}>Chờ xử lý</option>
+        <option value="2" {{ request('filter_by') === '2' ? 'selected' : '' }}>Đang vận chuyển</option>
+        <option value="3" {{ request('filter_by') === '3' ? 'selected' : '' }}>Đang giao</option>
+        <option value="4" {{ request('filter_by') === '4' ? 'selected' : '' }}>Đã giao</option>
+    </select>
+</form>
 
 @if(count($myOrder))
 @foreach($myOrder as $order)
@@ -50,6 +59,8 @@ Thêm danh mục | E-shopper
     </div>
 </div>
 @endforeach
+@else
+<p>Chưa có đơn hàng</p>
 @endif
 <div class="col-12 pb-1 d-flex justify-content-center pt-3">
     {{ $myOrder->links() }}
