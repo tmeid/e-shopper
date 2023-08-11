@@ -5,8 +5,11 @@
     <meta charset="utf-8">
     <title>@yield('title')</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free HTML Templates" name="keywords">
-    <meta content="Free HTML Templates" name="description">
+    <meta content="E-shopper" name="keywords">
+    <meta content="E-commerce" name="description">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('imgs/logo/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('imgs/logo/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('imgs/favicon-16x16.png') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">

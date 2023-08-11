@@ -2,3 +2,41 @@
     left: initial!important;
     right: 0!important;
 }
+.order p{
+    margin-bottom: 0.2rem!important;
+}
+.mobile-view{
+    display: none;
+    visibility: hidden;
+}
+
+@media screen and (max-width: 768px) {
+    .price{
+        width: 0;
+        display: none;
+        visibility: hidden;
+    }
+    .item-info{
+        width: 100%!important;
+    }
+    .item-info-left{
+        width: 60px!important;
+    }
+    .item-info-left a{
+        display: block;
+        width: 100%;
+        max-width: 100%;
+    }
+    .item-info-right{
+        width: calc(100% - 60px - 1rem)!important;
+    }
+    .item-detailt,
+    .item-quantity{
+        display: none;
+        visibility: hidden;
+    }
+    .mobile-view{
+        display: block;
+        visibility: visible;
+    }
+}
