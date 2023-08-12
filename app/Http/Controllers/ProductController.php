@@ -7,7 +7,6 @@ use App\Repositories\Cart\CartRepository;
 use App\Repositories\CartItem\CartItemRepository;
 use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Product\ProductRepository;
-use App\Repositories\ProductComment\ProductCommentRepository;
 use App\Repositories\ProductImg\ProductImgRepository;
 use App\Repositories\ProductItem\ProductItemRepository;
 use Illuminate\Http\Request;
@@ -17,7 +16,6 @@ class ProductController extends Controller
 {
     //
     protected $productRepository;
-    protected $productCommentRepository;
     protected $categoryRepo;
     protected $productItemRepo;
     protected $cartItemRepo;
@@ -26,15 +24,14 @@ class ProductController extends Controller
 
     public function __construct(
         ProductRepository $productRepo,
-        ProductCommentRepository $productCommentRepo,
         CategoryRepository $categoryRepo,
         ProductItemRepository $productItemRepo,
         CartItemRepository $cartItemRepo,
         CartRepository $cartRepo,
         ProductImgRepository $productImgRepo
+        
     ) {
         $this->productRepository = $productRepo;
-        $this->productCommentRepository = $productCommentRepo;
         $this->categoryRepo = $categoryRepo;
         $this->productItemRepo = $productItemRepo;
         $this->cartRepo = $cartRepo;
@@ -62,7 +59,8 @@ class ProductController extends Controller
         
         $sizes = $this->productRepository->getVariationItems($id, 'size');
         $colors = $this->productRepository->getVariationItems($id, 'color');
-        $comments = $this->productRepository->commentsInfo($id);
+        // $comments = $this->productRepository->commentsInfo($id);
+        $reviews = $this->productRepository->reviewsInfo($id);
 
         $relatedProducts = $this->productRepository->relatedProducts($id, $product, 4);
 
@@ -71,36 +69,13 @@ class ProductController extends Controller
             'product_item' => $product_item,
             'sizes' => $sizes,
             'colors' => $colors,
-            'comments' => $comments,
+            // 'comments' => $comments,
+            'reviews' => $reviews,
             'categories' => $categories,
             'relatedProducts' => $relatedProducts,
             'total_items_order' => $total_items_order,
             'productImgs' => $productImgs
         ]);
-    }
-
-    public function comment(Request $request, $id)
-    {
-        if (!empty($request->id)) {
-            $product_id = $request->id;
-
-            if ($product_id == $id) {
-                $request->validate([
-                    'name' => 'required',
-                    'email' => 'email',
-                    'comment' => 'required'
-                ]);
-                $data = [
-                    'product_id' =>  $product_id,
-                    'email' => $request->email,
-                    'name' => $request->name,
-                    'comment' => $request->comment
-                ];
-                $this->productCommentRepository->create($data);
-                return redirect()->back();
-                // return redirect()->route('product.detail', ['id' => $id]);
-            }
-        }
     }
 
     public function getProductItemDetail($id, Request $request)

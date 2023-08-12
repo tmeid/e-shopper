@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Review;
 use Illuminate\Support\Facades\Auth;
 
 function salePrice($discount, $price)
@@ -46,4 +47,12 @@ function create_slug($str)
         array('', '-', ''),
         remove_accent($str)
     );
+}
+
+function isReviewed($order_detail_id){
+    $review = Review::where('order_detail_id', $order_detail_id)->first();
+    if($review){
+        return true;
+    }
+    return false;
 }

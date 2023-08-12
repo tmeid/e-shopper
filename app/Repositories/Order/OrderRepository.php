@@ -13,6 +13,12 @@ class OrderRepository extends BaseRepository implements OrderRepositoryInterface
     public function getAllOrders($condition){
         return $this->model->where($condition)->orderBy('created_at', 'desc')->get();
     }
+    public function getOrder($condition){
+        return $this->model->where($condition)->first();
+    }
+    public function getOrders($condition){
+        return $this->model->where($condition)->get();
+    }
     public function getAllOrdersPaginate($condition, $request){
         $filterBy = null;
         $perPage = 10;

@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use App\Models\Address;
 use App\Models\ProductComment;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Review;
 
 class User extends Authenticatable
 {
@@ -49,5 +50,8 @@ class User extends Authenticatable
     }
     public function comments(){
         return $this->hasMany(ProductComment::class, 'user_id', 'id');
+    }
+    public function reviews(){
+        return $this->hasMany(Review::class, 'user_id', 'id');
     }
 }

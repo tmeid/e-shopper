@@ -9,4 +9,7 @@ class OrderDetailRepository extends BaseRepository implements OrderDetailReposit
     {
         return OrderDetail::class;
     }
+    public function getOrderDetail($condition){
+        return $this->model->where($condition)->first();
+    }
 }

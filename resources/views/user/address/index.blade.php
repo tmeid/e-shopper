@@ -66,6 +66,8 @@
 
         </div>
         @endforeach
+        @else
+        <p>Chưa có địa chỉ</p>
         @endif
     </div>
 

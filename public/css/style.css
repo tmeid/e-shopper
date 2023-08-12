@@ -9,6 +9,15 @@
     display: none;
     visibility: hidden;
 }
+.text-decoration{
+    text-decoration: none!important;
+}
+.star-checked{
+    color: #ffc700;
+}
+.star-not-checked{
+    color: #ccc;
+}
 
 @media screen and (max-width: 768px) {
     .price{

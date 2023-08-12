@@ -12,7 +12,7 @@
         <div class="col-lg-5 pb-5">
             <div id="product-carousel" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner border">
-                    @php 
+                    @php
                     $prodImgs = $productImgs->where('product_id', $product->id);
                     @endphp
                     <!-- @foreach($prodImgs as $prodImg) -->
@@ -32,7 +32,7 @@
 
         <div class="col-lg-7 pb-3">
             <h3 class="font-weight-semi-bold">{{ $product->name }}</h3>
-        
+
             @if($product->discount != null)
             <h3 class="font-weight-semi-bold mb-4">{{ salePrice($product->discount, $product->price) }}đ
                 <del style="font-size: 1.4rem" class="font-weight-light text-muted">{{ number_format($product->price, 0, null, ',') }}đ</del>
@@ -92,10 +92,7 @@
                                 <i class="fa fa-minus"></i>
                             </button>
                         </div>
-                        <input type="text" class="form-control bg-secondary text-center quantity-btn qty-btn" value="1" 
-                            onkeypress="return numberOnly(event)"
-                            onkeyup="getQtyKeyUp()"
-                        >
+                        <input type="text" class="form-control bg-secondary text-center quantity-btn qty-btn" value="1" onkeypress="return numberOnly(event)" onkeyup="getQtyKeyUp()">
                         <div class="input-group-btn">
                             <button class="btn btn-primary btn-plus quantity-btn increase-btn">
                                 <i class="fa fa-plus"></i>
@@ -117,55 +114,49 @@
         <div class="col">
             <div class="nav nav-tabs justify-content-center border-secondary mb-4">
                 <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Thông tin</a>
-                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Bình luận ({{ count($comments )}})</a>
+                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">Review ({{ count($reviews )}})</a>
             </div>
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="tab-pane-1">
                     <h4 class="mb-3">Thông tin sản phẩm</h4>
                     <p>{{ $product->content }}</p>
-                   
+
                 </div>
-    
-                <div class="tab-pane fade" id="tab-pane-3">
+                <div class="tab-pane fade" id="tab-pane-2">
                     <div class="row">
-                        <div class="col-md-6">
-                            <h4 class="mb-4">{{ count($comments )}} bình luận</h4>
-                            @if(count($comments) > 0)
-                            @foreach($comments as $comment)
+                        <div class="col-md-12">
+                            <h4 class="mb-4">{{ count($reviews )}} Review</h4>
+                            @if(count($reviews) > 0)
+                            @foreach($reviews as $review)
                             <div class="media mb-4">
                                 <img src="{{ asset('imgs/avt.jpg' )}}" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
                                 <div class="media-body">
-                                    <h6>{{ $comment->name }}<small> - <i>{{ date('d-m-Y', strtotime($comment->created_at)) }}</i></small></h6>
-                                    <p>{{ $comment->comment }}</p>
+                                    <h6>{{ $review->user->name }}<small> <i>{{ date('d-m-Y', strtotime($review->created_at)) }}</i></small></h6>
+                                    @php
+                                        $product_item_id = $review->orderDetail->product_item_id;
+                                        $product_item = $review->product->productItems()->find($product_item_id);
+                                    @endphp
+                                    <p><small>Phân loại: {{ $product_item->size}}, {{ $product_item->color}}</small></p>
+                                    <p>
+                                    <div class="rating">
+                                        @php 
+                                            $rating = $review->rating;
+                                        @endphp
+                                        @for($i = 1; $i <= $rating; $i++)
+                                            <span class="fa fa-star star-checked"></span>
+                                        @endfor
+                                        @if($rating < 5)
+                                            @for($j = 1; $j <= 5 - $rating; $j++)
+                                                <span class="fa fa-star star-not-checked"></span>
+                                            @endfor
+                                        @endif
+                                    </div>
+                                    </p>
+                                    <p>{{ $review->message }}</p>
                                 </div>
                             </div>
                             @endforeach
                             @endif
-                        </div>
-                        <div class="col-md-6">
-                            <h4 class="mb-4">Để lại lời nhắn để shop tư vấn nha</h4>
-                            <small>Email của bạn sẽ được giữ riêng tư, trường bắt buộc nhập *</small>
-                            <div class="d-flex my-3">
-                            </div>
-                            <form action="{{ route('product.comment', ['id' => $product->id])}}" method="POST">
-                                @csrf
-                                <input type="hidden" class="product_id" name="product_id" value="{{ $product->id }}">
-                                <div class="form-group">
-                                    <label for="message">Lời nhắn *</label>
-                                    <textarea id="message" cols="30" rows="5" class="form-control" name="comment" required></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Tên *</label>
-                                    <input type="text" class="form-control" id="name" name="name" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Email *</label>
-                                    <input type="email" class="form-control" id="email" name="email" required>
-                                </div>
-                                <div class="form-group mb-0">
-                                    <button type="submit" class="btn btn-primary px-3" name="submit">Gửi</button>
-                                </div>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -216,45 +207,45 @@
 
 @section('js')
 
-<script> 
+<script>
     function numberOnly(event) {
         let charCode = (event.which) ? event.which : event.keyCode;
-            
+
         if ((charCode >= 32 && charCode <= 47) || charCode >= 58) {
             return false;
         }
         return true;
     }
 
-    function getQtyKeyUp(){
+    function getQtyKeyUp() {
         let qtyInput = document.querySelector('.qty-btn'),
             qtyInputValue = parseInt(qtyInput.value, 10);
 
-            qtyStock = document.querySelector('.qty-stock'),
+        qtyStock = document.querySelector('.qty-stock'),
             maxQty = parseInt(qtyStock.textContent, 10);
-            
-        if(qtyInputValue > maxQty){
+
+        if (qtyInputValue > maxQty) {
             qtyInput.value = maxQty;
-        }else if(qtyInputValue < 1){
+        } else if (qtyInputValue < 1) {
             qtyInput.value = 1;
         }
     }
 
     $(document).ready(function() {
         // increase, decrease-btn btn 
-        $('.decrease-btn').on('click', function(){
+        $('.decrease-btn').on('click', function() {
             let current_qty = parseInt($('.qty-btn').val(), 10) - 1;
-            if(current_qty  <= 0){
+            if (current_qty <= 0) {
                 current_qty = 1;
             }
             $('.qty-btn').val(current_qty);
         });
 
-        $('.increase-btn').on('click', function(){
+        $('.increase-btn').on('click', function() {
             let current_qty = parseInt($('.qty-btn').val(), 10) + 1,
                 maxQtyStock = parseInt($('.qty-stock').text(), 10);
-        
-            if(current_qty  > maxQtyStock){
+
+            if (current_qty > maxQtyStock) {
                 current_qty = maxQtyStock;
             }
             $('.qty-btn').val(current_qty);
@@ -313,7 +304,7 @@
         });
 
         $('.add-to-cart').click(function(e) {
-            
+
             e.preventDefault();
 
             $.ajax({
@@ -337,13 +328,13 @@
                         window.location.href = response.redirect_uri;
                     } else if (response.status == 'success') {
                         // update total item in cart
-                        if(response.flag_increase){
+                        if (response.flag_increase) {
                             $items = +$('.badge').text() + 1;
                             $('.badge').text($items);
                         }
 
                         alert(response.msg);
-                    }else{
+                    } else {
                         alert(response.status);
                     }
                 },

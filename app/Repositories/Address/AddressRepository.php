@@ -19,7 +19,7 @@ class AddressRepository extends BaseRepository implements RepositoryInterface{
     public function findOrInsert($data){
         return $this->model->firstOrCreate($data);
     }
-    public function getAddress(){
-        return $this->model->get();
+    public function getAddress($data){
+        return $this->model->where($data)->get();
     }
 }

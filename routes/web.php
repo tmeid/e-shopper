@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\SubProductController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\User\AddressController;
 use App\Http\Controllers\User\OrderController;
+use App\Http\Controllers\User\ReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -162,7 +163,12 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'user'])->group(functi
     Route::prefix('order')->name('order.')->group(function(){
         Route::get('/', [OrderController::class, 'show'])->name('order');
         Route::get('/{id}', [OrderController::class, 'detailOrder'])->name('show');
+
+        Route::get('/{order}/review', [ReviewController::class, 'index'])->name('index');
+        Route::get('/{order}/review/{productItem}', [ReviewController::class, 'review'])->name('review');
+        Route::post('/{order}/review/{productItem}', [ReviewController::class, 'postReview']);
     });
+
     
       
 });

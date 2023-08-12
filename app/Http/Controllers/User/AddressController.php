@@ -18,7 +18,8 @@ class AddressController extends Controller
         $this->addressRepo = $addressRepo;
     }
     public function address(){
-        $addresses = $this->addressRepo->getAddress();
+        $user_id = Auth::user()->id;
+        $addresses = $this->addressRepo->getAddress(['user_id' => $user_id]);
         return view('user.address.index')->with('addresses', $addresses);
     }
     public function add(Request $request){

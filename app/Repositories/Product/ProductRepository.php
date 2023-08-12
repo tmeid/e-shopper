@@ -38,6 +38,9 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         $comments = $this->model->find($product_id)->productComments;
         return $comments;
     }
+    public function reviewsInfo($product_id){
+        return $this->model->find($product_id)->reviews;
+    }
 
     public function relatedProducts($product_id, $product, $limit){
         return $this->model->where('category_id', $product->category_id)

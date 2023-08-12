@@ -7,6 +7,8 @@ use App\Repositories\Order\OrderRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use function PHPUnit\Framework\isEmpty;
+
 class OrderController extends Controller
 {
     //
@@ -25,7 +27,12 @@ class OrderController extends Controller
     }
 
     public function detailOrder($id){
-        $order = $this->orderRepo->find($id);
-        return view('user.order.show')->with('order', $order);
+        $user_id = Auth::user()->id;
+        $order = $this->orderRepo->getOrder(['id' => $id, 'user_id' => $user_id]);
+        if($order){
+            return view('user.order.show')->with('order', $order);
+        }
+        abort('404');
+        
     }
 }

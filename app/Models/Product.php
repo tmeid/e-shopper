@@ -11,6 +11,7 @@ use App\Models\ProductImg;
 use App\Models\Order;
 use App\Models\ProductComment;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Review;
 
 class Product extends Model
 {
@@ -41,6 +42,9 @@ class Product extends Model
 
     public function productComments(){
         return $this->hasMany(ProductComment::class, 'product_id', 'id');
+    }
+    public function reviews(){
+        return $this->hasMany(Review::class, 'product_id', 'id');
     }
     public function productImgs(){
         return $this->hasMany(ProductImg::class, 'product_id', 'id');
