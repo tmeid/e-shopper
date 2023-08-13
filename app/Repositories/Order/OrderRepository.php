@@ -30,6 +30,7 @@ class OrderRepository extends BaseRepository implements OrderRepositoryInterface
         }else{
             $query = $this->model->where($condition);
         }
+        $query = $query->orderBy('created_at', 'DESC');
         return [
             'orders' => $query->paginate($perPage)->withQueryString(),
             'filterBy' => $filterBy

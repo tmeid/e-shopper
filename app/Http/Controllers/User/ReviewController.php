@@ -48,7 +48,8 @@ class ReviewController extends Controller
             
         $checkAuthOrder = $this->orderRepo->getOrder(['id' => $order->id, 'user_id' => $user_id]);
         $checkProductItemInOrder = $this->orderDetailRepo->getOrderDetail(['order_id' => $order->id, 'product_item_id' => $productItem->id]);
-        if($checkAuthOrder &&  $checkProductItemInOrder){
+        // order thuộc user, và product_item thuộc order, user đã nhận được hàng
+        if($checkAuthOrder &&  $checkProductItemInOrder && $order->order_status_id == 4){
             $order_detail_id = $this->orderDetailRepo->getOrderDetail(['order_id' => $order->id, 'product_item_id' => $productItem->id])->id;
             if(!isReviewed($order_detail_id)){
                 return view('user.review.review')->with('item', $productItem);
