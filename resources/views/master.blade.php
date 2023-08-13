@@ -189,13 +189,6 @@
     <script src="{{ asset('vendor/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('vendor/js/easing.min.js') }} "></script>
     <script src="{{ asset('vendor/js/owl.carousel.min.js') }}"></script>
-
-    <!-- Contact Javascript File -->
-    <script src="mail/jqBootstrapValidation.min.js"></script>
-    <script src="mail/contact.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="{{ asset('vendor/js/js.main') }}"></script>
 </body>
 
 </html>
