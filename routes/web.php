@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Admin\SubProductController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\User\AddressController;
@@ -138,6 +139,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
         Route::get('/edit/{brand}', [BrandController::class, 'edit'])->name('showFormEdit');
         Route::post('/edit/{brand}', [BrandController::class, 'postEdit'])->name('edit');
         Route::delete('/', [BrandController::class, 'delete'])->name('delete');
+    });
+
+    Route::prefix('review')->name('review.')->group(function(){
+        Route::get('/', [AdminReviewController::class, 'index'])->name('index');
     });
    
 });

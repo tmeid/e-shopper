@@ -95,6 +95,18 @@
         </div>
     </li>
 
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReview" aria-expanded="true" aria-controls="collapseReview">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Review</span>
+        </a>
+        <div id="collapseReview" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="{{ route('admin.review.index') }}">Danh sách</a>
+            </div>
+        </div>
+    </li>
+
 
 </ul>
 <!-- End of Sidebar -->
