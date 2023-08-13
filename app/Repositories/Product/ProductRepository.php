@@ -39,7 +39,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         return $comments;
     }
     public function reviewsInfo($product_id){
-        return $this->model->find($product_id)->reviews;
+        return $this->model->find($product_id)->reviews()->paginate(10);
     }
 
     public function relatedProducts($product_id, $product, $limit){

@@ -113,16 +113,16 @@
     <div class="row px-xl-5">
         <div class="col">
             <div class="nav nav-tabs justify-content-center border-secondary mb-4">
-                <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Thông tin</a>
-                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">Review ({{ count($reviews )}})</a>
+                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-1">Thông tin</a>
+                <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-2">Review ({{ count($reviews )}})</a>
             </div>
             <div class="tab-content">
-                <div class="tab-pane fade show active" id="tab-pane-1">
+                <div class="tab-pane fade" id="tab-pane-1">
                     <h4 class="mb-3">Thông tin sản phẩm</h4>
                     <p>{{ $product->content }}</p>
 
                 </div>
-                <div class="tab-pane fade" id="tab-pane-2">
+                <div class="tab-pane fade show active" id="tab-pane-2">
                     <div class="row">
                         <div class="col-md-12">
                             <h4 class="mb-4">{{ count($reviews )}} Review</h4>
@@ -156,6 +156,9 @@
                                 </div>
                             </div>
                             @endforeach
+                            <div class="col-12 pb-1 d-flex justify-content-center pt-3">
+                                {{ $reviews->links() }}
+                            </div>
                             @endif
                         </div>
                     </div>
