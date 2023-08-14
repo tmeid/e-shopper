@@ -71,9 +71,10 @@ Thanh toán | E-Shopper
                 <h5><i class="fas fa-map-marker text-primary mr-2"></i>Địa chỉ nhận hàng</h5>
                 <p class="user-address"></p>
 
-                @if(count($addresses) > 0)
+                
                 <a type="button" class="edit btn border-success mb-2" onclick="openLightbox(-100)">Cập nhật địa chỉ</a>
-
+                
+                @if(count($addresses) > 0)
                 <label for="select-address" class="d-block">Địa chỉ</label>
                 @error('address')
                 <span class="text-danger">{{ $message }}</span>
@@ -84,12 +85,6 @@ Thanh toán | E-Shopper
                     <option value="{{ $address->address }}">{{ $address->name .' (' .$address->phone .'), ' .$address->address }}</option>
                     @endforeach
                 </select>
-                @else
-                <label for="add-address">Thêm địa chỉ</label>
-                @error('address')
-                <span class="text-danger">{{ $message }}</span>
-                @enderror
-                <input type="text" placeholder="Nhập địa chỉ" name="address" class="form-control" id="add-address">
                 @endif
                 <br>
                 @if(count($payments) > 0)
@@ -173,6 +168,8 @@ Thanh toán | E-Shopper
                     <hr>
                 </div>
                 @endforeach
+                @else 
+                <p>Địa chỉ trống</p>
                 @endif
             </form>
 
