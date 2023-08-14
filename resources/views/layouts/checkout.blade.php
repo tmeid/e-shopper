@@ -82,7 +82,7 @@ Thanh toán | E-Shopper
                 <select name="address" id="select-address" class="form-control" aria-label="Default select example">
                     <option value="">Chọn địa chỉ</option>
                     @foreach($addresses as $address)
-                    <option value="{{ $address->address }}">{{ $address->name .' (' .$address->phone .'), ' .$address->address }}</option>
+                    <option value="{{ $address->id }}" {{ old('address') == $address->id ? 'selected' : '' }}>{{ $address->name .' (' .$address->phone .'), ' .$address->address }}</option>
                     @endforeach
                 </select>
                 @endif
@@ -95,7 +95,7 @@ Thanh toán | E-Shopper
                 <select name="payment" id="" class="form-control" aria-label="Default select example">
                     <option value="">Chọn hình thức thanh toán</option>
                     @foreach($payments as $payment)
-                    <option value="{{ $payment->id }}">{{ $payment->name }}</option>
+                    <option value="{{ $payment->id }}" {{ old('payment') == $payment->id ? 'selected' : '' }}>{{ $payment->name }}</option>
                     @endforeach
                 </select>
                 @endif

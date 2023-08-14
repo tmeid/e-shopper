@@ -63,9 +63,6 @@ class CartController extends Controller
             ]);
         }
 
-
-        // save items_order to session
-
         return view('layouts.cart')->with([
             'categories' => $categories,
             'total_items_order' => $total_items_order,

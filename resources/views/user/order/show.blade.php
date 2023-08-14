@@ -57,16 +57,11 @@ Chi tiết đơn hàng
                 </div>
 
                 <div class="position-relative row">
-                    <label for="" class="col-md-3 text-md-right col-form-label">Địa chỉ:</label>
+                    <label for="" class="col-md-3 text-md-right col-form-label">Địa chỉ nhận hàng:</label>
                     <div class="col-md-9 col-xl-8 col-form-label">
+                        <p>{{ $order->name }}</p>
                         <p>{{ $order->address }}</p>
-                    </div>
-                </div>
-
-                <div class="position-relative row">
-                    <label for="" class="col-md-3 text-md-right col-form-label">Số điện thoại:</label>
-                    <div class="col-md-9 col-xl-8 col-form-label">
-                        <p>{{ $order->user->phone }}</p>
+                        <p>{{ $order->phone }}</p>
                     </div>
                 </div>
 

@@ -9,6 +9,12 @@ Thêm danh mục | E-shopper
 @endsection
 
 @section('content')
+@if(session('msg'))
+<p class="alert alert-{{ session('type') }}" style="width: 300px; margin: 0 auto 10px;">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+    {{ session('msg') }}
+</p>
+@endif
 <form action="" class="mb-3">
     <select class="form-control" name="filter_by" id="" onchange="this.form.submit()" style="width:initial">
         <option value="">Bộ lọc</option>
