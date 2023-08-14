@@ -23,22 +23,32 @@ Giỏ hàng | E-Shopper
                     @if( $items_order && count($items_order))
                     @foreach($items_order as $item_order)
                     <tr class="product_data">
+                        @php 
+                            $noTrashedProduct = $item_order->noTrashedProduct;
+                        @endphp
                         <input type="hidden" class="qty-stock-{{$item_order->id}}" value="{{ $item_order->quantity }}">
                         <input type="hidden" class="cart_items_id" value="{{ $item_order->pivot->id }}">
+                        <input type="hidden" class="cart_id" value="{{ $cart_id}}">
                         <td class="align-items-start d-flex flex-wrap">
-                            <img src="{{ asset('imgs/products/' .$item_order->noTrashedProduct->productImgs->first()->path) }}" alt="{{ $item_order->noTrashedProduct->name }}" style="width: 50px; display: block;">
-                            <span class="mt-1 ml-2"><a style="color:#000" class="text-decoration-none" href="{{ route('product.detail', ['product' => $item_order->noTrashedProduct->id ])}}">{{ $item_order->noTrashedProduct->name }} ({{ 'Size: ' .$item_order->size .', màu: ' .$item_order->color }})</a></span>
+                            <a href="{{ route('product.detail', ['product' => $noTrashedProduct->slug]) }}"><img src="{{ asset('imgs/products/' .$noTrashedProduct->productImgs->first()->path) }}" alt="{{ $noTrashedProduct->name }}" style="width: 50px; display: block;"></a>
+                            @if($item_order->quantity >= 1)
+                            <span class="mt-1 ml-2"><a style="color:#000" class="text-decoration-none" href="{{ route('product.detail', ['product' => $noTrashedProduct->slug ])}}">{{ $noTrashedProduct->name }} ({{ 'Size: ' .$item_order->size .', màu: ' .$item_order->color }})</a></span>
+                            @else
+                            <span class="mt-1 ml-2"><del><a style="color:#000" class="text-decoration-none" href="{{ route('product.detail', ['product' => $noTrashedProduct->id ])}}">{{ $noTrashedProduct->name }} ({{ 'Size: ' .$item_order->size .', màu: ' .$item_order->color }})</a></del>
+                            <span class="text-danger">Hết hàng</span></span>
+                            @endif
                         </td>
                         <td class="align-middle">
-                            @if($item_order->noTrashedProduct->discount > 0)
-                            <del style="font-size: 0.95rem" class="font-weight-light text-muted">₫{{ number_format(($item_order->noTrashedProduct->price), 0, null, '.')}}</del>
-                            <span class="ml-2 inline-block price-{{$item_order->id}}">₫{{ number_format((1- $item_order->noTrashedProduct->discount)*($item_order->noTrashedProduct->price), 0, null, '.')}}</span>
+                            @if($noTrashedProduct->discount > 0)
+                            <del style="font-size: 0.95rem" class="font-weight-light text-muted">₫{{ number_format(($noTrashedProduct->price), 0, null, '.')}}</del>
+                            <span class="ml-2 inline-block price-{{$item_order->id}}">₫{{ number_format((1- $noTrashedProduct->discount)*($noTrashedProduct->price), 0, null, '.')}}</span>
                             @else
-                            <span class="price-{{$item_order->id}}">₫{{ number_format(($item_order->noTrashedProduct->price), 0, null, '.') }}</span>
+                            <span class="price-{{$item_order->id}}">₫{{ number_format(($noTrashedProduct->price), 0, null, '.') }}</span>
                             @endif
 
                         </td>
                         <td class="align-middle">
+                            @if($item_order->quantity >= 1)
                             <div class="input-group quantity mx-auto" style="width: 100px;">
                                 <div class="input-group-btn">
                                     <button class="btn btn-sm btn-primary btn-minus decrease-btn change-qty" onclick="decrease('.qty-btn-{{$item_order->id }}'),
@@ -54,12 +64,29 @@ Giỏ hàng | E-Shopper
                                     </button>
                                 </div>
                             </div>
+                            @else
+                            <div class="input-group quantity mx-auto" style="width: 100px;">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-sm btn-primary btn-minus decrease-btn change-qty" disabled>
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                                <input type="text" id="{{$item_order->id }}" class="form-control form-control-sm bg-secondary text-center change-qty-input quantity-input qty-btn-{{$item_order->id }}" value="0" disabled>
+                                <div class="input-group-btn">
+                                    <button class="btn btn-sm btn-primary btn-plus  increase-btn change-qty" disabled>
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            @endif
                         </td>
                         <td class="align-middle cash-{{ $item_order->id }} subtotal">
-                            @if($item_order->noTrashedProduct->discount > 0)
-                            ₫{{ number_format((1- $item_order->noTrashedProduct->discount)*($item_order->noTrashedProduct->price)*($item_order->pivot->quantity), 0, null, '.')}}
+                            @if($item_order->quantity <= 0)
+                                ₫0
+                            @elseif($noTrashedProduct->discount > 0)
+                            ₫{{ number_format((1- $noTrashedProduct->discount)*($noTrashedProduct->price)*($item_order->pivot->quantity), 0, null, '.')}}
                             @else
-                            ₫{{ number_format(($item_order->noTrashedProduct->price)*($item_order->pivot->quantity), 0, null, '.') }}
+                            ₫{{ number_format(($noTrashedProduct->price)*($item_order->pivot->quantity), 0, null, '.') }}
                             @endif
                         </td>
                         <td class="align-middle"><button class="btn btn-sm btn-primary delete-btn"><i class="fa fa-times"></i></button></td>
@@ -85,7 +112,7 @@ Giỏ hàng | E-Shopper
                         <h5 class="font-weight-bold">Tổng</h5>
                         <h5 class="font-weight-bold total">₫{{ number_format($totalPrice, 0, null, '.') }}</h5>
                     </div>
-                    <a href="{{ route('checkout.index') }}" class="btn btn-block btn-primary my-3 py-3">Mua hàng</a>
+                    <a href="{{ route('checkout.index') }}" class="btn btn-block btn-primary my-3 py-3 checkout">Mua hàng</a>
                 </div>
             </div>
         </div>
@@ -248,7 +275,29 @@ Giỏ hàng | E-Shopper
                 }
             });
 
-        })
+        });
+
+        $('.checkout').click(function(e){
+            e.preventDefault();
+            let cart_id = $('.cart_id').val();
+            $.ajax({
+                method: 'POST',
+                url: '/pre-checkout',
+                data: {
+                    cart_id: cart_id
+                },
+                success: function(response){
+                    if(response.status == 'success'){
+                        window.location.href = e.target.href;
+                    }else if(response.status == 'fail'){
+                        alert('Xin vui lòng xoá những sản phẩm hết hàng để đặt hàng');
+                    }else if(response.status == 'empty'){
+                        alert('Giỏ hàng trống');
+                    }
+                    
+                }
+            })
+        });
     });
 
 </script>

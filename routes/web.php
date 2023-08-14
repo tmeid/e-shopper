@@ -54,10 +54,12 @@ Route::prefix('product')->name('product.')->group(function(){
 Route::get('/cart', [CartController::class, 'index'])->name('cart')->middleware('auth');
 Route::post('/update-cart', [CartController::class, 'update'])->name('updateCart')->middleware('auth');
 Route::post('/delete-cart-item', [CartController::class, 'delete'])->name('deleteCartItem')->middleware('auth');
+Route::post('/pre-checkout', [CartController::class, 'preCheckout'])->middleware('auth');
 
 Route::prefix('checkout')->middleware('auth')->name('checkout.')->group(function(){
     Route::get('/', [CheckoutController::class, 'index'])->name('index');
     Route::post('/', [CheckoutController::class, 'process'])->name('checkoutPost');
+    Route::get('/vnPayCheck', [CheckoutController::class, 'vnPayCheck'])->name('vnPayCheck');
 });
 
 

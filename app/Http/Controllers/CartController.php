@@ -48,18 +48,23 @@ class CartController extends Controller
             $items_order = $this->cartRepository->getItemsPerUser($cart_id);
 
             foreach ($items_order as $item_order) {
-                if ($item_order->noTrashedProduct->discount > 0) {
-                    $price = (1 - $item_order->noTrashedProduct->discount) * ($item_order->noTrashedProduct->price) * ($item_order->pivot->quantity);
-                } else {
-                    $price = ($item_order->noTrashedProduct->price) * ($item_order->pivot->quantity);
+                if($item_order->quantity >= 1){
+                    $noTrashedProduct = $item_order->noTrashedProduct;
+                    if ($noTrashedProduct->discount > 0) {
+                        $price = (1 - $noTrashedProduct->discount) * ($noTrashedProduct->price) * ($item_order->pivot->quantity);
+                    } else {
+                        $price = ($noTrashedProduct->price) * ($item_order->pivot->quantity);
+                    }
+                    $totalPrice += $price;
                 }
-                $totalPrice += $price;
+                
             }
             return view('layouts.cart')->with([
                 'categories' => $categories,
                 'total_items_order' => $total_items_order,
                 'items_order' => $items_order,
-                'totalPrice' => $totalPrice
+                'totalPrice' => $totalPrice,
+                'cart_id' => $cart_id
             ]);
         }
 
@@ -177,6 +182,25 @@ class CartController extends Controller
                     return response()->json(['status' => 'delete fail']);
                 }
                 return response()->json(['status' => 'unauthorized']);
+            }
+        }
+    }
+
+    public function preCheckout(Request $request){
+        if($request->ajax()){
+            if(Auth::check()){
+                $cart_id = $request->cart_id;
+                $cart_items = $this->cartRepository->getItemsPerUser($cart_id);
+                if(count($cart_items)){
+                    foreach($cart_items as $cart_item){
+                        if($cart_item->quantity <= 0){
+                            return response()->json(['status' => 'fail']);
+                        }
+                    }
+                    return response()->json(['status' => 'success']);
+                }else{
+                    return response()->json(['status' => 'empty']);
+                }
             }
         }
     }

@@ -8,12 +8,15 @@ Thanh toán | E-Shopper
 <!-- Cart Start -->
 <div class="container-fluid pt-2">
     <div class="row px-xl-5">
-
         <div class="col table-responsive mb-5 text-center">
             <h2 class="text-center mb-3"> THANH TOÁN</h2>
             @if(session('msg'))
             <span style="margin: 0 auto;" class="alert alert-danger inline-block">{{ session('msg') }}</span>
 
+            @endif
+
+            @if($errors->has('cart_id'))
+                <span style="margin: 0 auto;" class="alert alert-danger inline-block">Opps, có vài sản phẩm đã hết</span>
             @endif
             <table class="table table-bordered text-center mb-0" style="color:#000">
                 <thead class="bg-secondary text-dark">
@@ -28,30 +31,36 @@ Thanh toán | E-Shopper
                     @if(count($items_order))
                     @foreach($items_order as $item_order)
                     <tr class="product_data">
-                        <input type="hidden" class="qty-stock-{{$item_order->id}}" value="{{ $item_order->quantity }}">
-                        <input type="hidden" class="cart_items_id" value="{{ $item_order->pivot->id }}">
+                        @php
+                            $noTrashedProduct = $item_order->noTrashedProduct;
+                        @endphp
                         <td class="align-items-start d-flex flex-wrap">
-                            <img src="{{ asset('imgs/products/' .$item_order->noTrashedProduct->productImgs->first()->path) }}" alt="{{ $item_order->noTrashedProduct->name }}" style="width: 50px; display: block;">
-                            <span class="mt-1 ml-2"><a style="color:#000" class="text-decoration-none" href="{{ route('product.detail', ['product' => $item_order->noTrashedProduct->id ])}}">{{ $item_order->noTrashedProduct->name }} ({{ 'Size: ' .$item_order->size .', màu: ' .$item_order->color }})</a></span>
+                            <a href="{{ route('product.detail', ['product' => $noTrashedProduct->slug]) }}"><img src="{{ asset('imgs/products/' .$noTrashedProduct->productImgs->first()->path) }}" alt="{{ $noTrashedProduct->name }}" style="width: 50px; display: block;"></a>
+                            @if($item_order->quantity >= 1)
+                            <span class="mt-1 ml-2"><a style="color:#000" class="text-decoration-none" href="{{ route('product.detail', ['product' => $noTrashedProduct->slug ])}}">{{ $noTrashedProduct->name }} ({{ 'Size: ' .$item_order->size .', màu: ' .$item_order->color }})</a></span>
+                            @else
+                            <span class="mt-1 ml-2"><del><a style="color:#000" class="text-decoration-none" href="{{ route('product.detail', ['product' => $noTrashedProduct->slug ])}}">{{ $noTrashedProduct->name }} ({{ 'Size: ' .$item_order->size .', màu: ' .$item_order->color }})</a></del>
+                            <span class="text-danger">Hết hàng</span></span>
+                            @endif
                         </td>
                         <td class="align-middle">
-                            @if($item_order->noTrashedProduct->discount > 0)
-                            <span class="ml-2 inline-block price-{{$item_order->id}}">₫{{ number_format((1- $item_order->noTrashedProduct->discount)*($item_order->noTrashedProduct->price), 0, null, '.')}}</span>
+                            @if($noTrashedProduct->discount > 0)
+                            <span class="ml-2 inline-block">₫{{ number_format((1- $noTrashedProduct->discount)*($noTrashedProduct->price), 0, null, '.')}}</span>
                             @else
-                            <span class="price-{{$item_order->id}}">₫{{ number_format(($item_order->noTrashedProduct->price), 0, null, '.') }}</span>
+                            <span>₫{{ number_format(($noTrashedProduct->price), 0, null, '.') }}</span>
                             @endif
 
                         </td>
                         <td class="align-middle">
-                            <div class="input-group quantity mx-auto" style="width: 100px;">
-                                <input type="text" id="{{$item_order->id }}" class="form-control form-control-sm bg-secondary text-center" value="{{ $item_order->pivot->quantity }}">
-                            </div>
+                            <span class="bg-secondary text-center d-block">{{ $item_order->pivot->quantity }}</span>
                         </td>
                         <td class="align-middle cash-{{ $item_order->id }} subtotal">
-                            @if($item_order->noTrashedProduct->discount > 0)
-                            ₫{{ number_format((1- $item_order->noTrashedProduct->discount)*($item_order->noTrashedProduct->price)*($item_order->pivot->quantity), 0, null, '.')}}
+                            @if($item_order->quantity <= 0)
+                                ₫0
+                            @elseif($noTrashedProduct->discount > 0)
+                            ₫{{ number_format((1- $noTrashedProduct->discount)*($noTrashedProduct->price)*($item_order->pivot->quantity), 0, null, '.')}}
                             @else
-                            ₫{{ number_format(($item_order->noTrashedProduct->price)*($item_order->pivot->quantity), 0, null, '.') }}
+                            ₫{{ number_format(($noTrashedProduct->price)*($item_order->pivot->quantity), 0, null, '.') }}
                             @endif
                         </td>
                     </tr>

@@ -13,6 +13,7 @@ use App\Repositories\Payment\PaymentRepository;
 use App\Repositories\Product\ProductRepository;
 use App\Repositories\ProductItem\ProductItemRepository;
 use App\Repositories\User\UserRepository;
+use App\Utilities\VNPay;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Ui\Presets\React;
@@ -66,7 +67,7 @@ class CheckoutController extends Controller
         $addresses = $this->userRepo->getAddresses($user_id);
         $cart_info = $this->cartRepository->findByKey('user_id', $user_id);
 
-        if($cart_info){
+        if ($cart_info) {
             $cart_id = $cart_info->id;
             $totalPrice = 0;
             $payments = $this->paymentRepo->getAll();
@@ -74,12 +75,15 @@ class CheckoutController extends Controller
             $items_order = $this->cartRepository->getItemsPerUser($cart_id);
 
             foreach ($items_order as $item_order) {
-                if ($item_order->noTrashedProduct->discount > 0) {
-                    $price = (1 - $item_order->noTrashedProduct->discount) * ($item_order->noTrashedProduct->price) * ($item_order->pivot->quantity);
-                } else {
-                    $price = ($item_order->noTrashedProduct->price) * ($item_order->pivot->quantity);
+                if($item_order->quantity >= 1){
+                    $noTrashedProduct = $item_order->noTrashedProduct;
+                    if ($noTrashedProduct->discount > 0) {
+                        $price = (1 - $noTrashedProduct->discount) * ($noTrashedProduct->price) * ($item_order->pivot->quantity);
+                    } else {
+                        $price = ($noTrashedProduct->price) * ($item_order->pivot->quantity);
+                    }
+                    $totalPrice += $price;
                 }
-                $totalPrice += $price;
             }
 
             return view('layouts.checkout')->with([
@@ -99,74 +103,85 @@ class CheckoutController extends Controller
     {
 
         $request->validate([
-            'address' => ['required', function($attribute, $value, $fail){
+            'address' => ['required', function ($attribute, $value, $fail) {
                 $address = $this->addressRepo->find($value);
-                if(!$address){
+                if (!$address) {
                     $fail("Địa chỉ không tồn tại");
                 }
             }],
-            'payment' => 'required'
+            'payment' => 'required',
+            'cart_id' => [function($attribute, $value, $fail){
+                $cart_id = $value;
+                $cart_items = $this->cartRepository->getItemsPerUser($cart_id);
+                if(count($cart_items)){
+                    foreach($cart_items as $cart_item){
+                        if($cart_item->quantity <= 0){
+                            $fail('Opps, có vài sản phẩm đã hết hàng');
+                            break;
+                        }
+                    }
+                }
+            }]
         ], [
             'address.required' => 'Chưa nhập địa chỉ',
             'payment.required' => 'Chưa chọn hình thức thanh toán'
         ]);
 
-        // Lưu thông tin địa chỉ xuống bảng addresses nếu địa chỉ chưa tồn tại --> lấy id để insert vào bảng orders
         $address_id = $request->address;
         $payment_id = $request->payment;
         $order_total = $request->order_total;
         $cart_id = $request->cart_id;
         $user_id = Auth::user()->id;
 
-        if(!empty($order_total)){
-            // payment later 
+        if (!empty($order_total)) {
+            // payment later         
             $addressRecord = $this->addressRepo->find($address_id);
-            if($payment_id == 1){
-                // lưu thông tin order
-                $inserOrder = $this->orderRepo->create([
-                    'user_id' => Auth::user()->id,
-                    'name' => $addressRecord->name,
-                    'address' => $addressRecord->address,
-                    'phone' => $addressRecord->phone,
-                    'payment_method_id' => $payment_id,
-                    'order_total' => $order_total,
-                    'order_status_id' => 1
-                ]);
-                if ($inserOrder) {
-                    $inserOrderId = $inserOrder->id;
-                    // lưu thông tin vào bảng order_details
-                    $cart_items = $this->cartItemRepo->getItemsInSameCart(['cart_id' => $cart_id]);
-                    if (count($cart_items) > 0) {
 
-                        foreach ($cart_items as $cart_item) {
-                            $productId = $this->productItemRepo->find($cart_item->product_item_id)->product_id;
-                            $product = $this->productRepo->find($productId);
+            // lưu thông tin order
+            $inserOrder = $this->orderRepo->create([
+                'user_id' => Auth::user()->id,
+                'name' => $addressRecord->name,
+                'address' => $addressRecord->address,
+                'phone' => $addressRecord->phone,
+                'payment_method_id' => $payment_id,
+                'order_total' => $order_total,
+                'order_status_id' => 1
+            ]);
+            if ($inserOrder) {
+                $inserOrderId = $inserOrder->id;
+                // lưu thông tin vào bảng order_details
+                $cart_items = $this->cartItemRepo->getItemsInSameCart(['cart_id' => $cart_id]);
+                if (count($cart_items) > 0) {
 
-                            if ($product->discount > 0) {
-                                $final_price = (1 - $product->discount) * ($product->price);
-                            } else {
-                                $final_price = $product->price;
-                            }
+                    foreach ($cart_items as $cart_item) {
+                        $productId = $this->productItemRepo->find($cart_item->product_item_id)->product_id;
+                        $product = $this->productRepo->find($productId);
 
-                            $this->orderDetailRepo->create([
-                                'order_id' =>  $inserOrderId,
-                                'product_item_id' => $cart_item->product_item_id,
-                                'quantity' => $cart_item->quantity,
-                                'price' => $final_price
-                            ]);
-
-
-                            // qty còn lại trong product_items
-                            $product_item = $this->productItemRepo->find($cart_item->product_item_id);
-                            $product_item->update(['quantity' => $product_item->quantity - $cart_item->quantity]);
-
-                            // update số lượng sản phẩm sold, quantity còn lại trong bảng product
-                            // $productId = $this->productItemRepo->find($cart_item->product_item_id)->product_id;
-                            // $product = $this->productRepo->find($productId);
-                            $product->update(['qty_sold' => $product->qty_sold + $cart_item->quantity]);
-                            $product->update(['quantity' => $product->quantity - $cart_item->quantity]);
+                        if ($product->discount > 0) {
+                            $final_price = (1 - $product->discount) * ($product->price);
+                        } else {
+                            $final_price = $product->price;
                         }
 
+                        $this->orderDetailRepo->create([
+                            'order_id' =>  $inserOrderId,
+                            'product_item_id' => $cart_item->product_item_id,
+                            'quantity' => $cart_item->quantity,
+                            'price' => $final_price
+                        ]);
+
+                        // qty còn lại trong product_items
+                        $product_item = $this->productItemRepo->find($cart_item->product_item_id);
+                        $product_item->update(['quantity' => $product_item->quantity - $cart_item->quantity]);
+
+                        // update số lượng sản phẩm sold, quantity còn lại trong bảng product
+                        // $productId = $this->productItemRepo->find($cart_item->product_item_id)->product_id;
+                        // $product = $this->productRepo->find($productId);
+                        $product->update(['qty_sold' => $product->qty_sold + $cart_item->quantity]);
+                        $product->update(['quantity' => $product->quantity - $cart_item->quantity]);
+                    }
+                    // payment later
+                    if ($payment_id == 1) {
                         // xoá thông tin trong bảng cart_items
                         $deleteCartItemStatus = $this->cartItemRepo->deleteItems(['cart_id' => $cart_id]);
                         if ($deleteCartItemStatus) {
@@ -176,91 +191,68 @@ class CheckoutController extends Controller
                             $type = 'success';
                             return redirect()->route('user.order.order')->with(['msg' => $msg, 'type' => $type]);
                         } else {
-                            $msg = 'Giao dịch thất bại';
+                            $msg = 'Giao dịch thành công mặc dù chưa xoá ở các bảng cart';
+                            $type = 'success';
                         }
-                    } else {
-                        $msg = 'Lưu thông tin vào bảng order_details bị lỗi';
+                    } elseif ($payment_id == 2) {
+                        // online payment
+                        //1. Lấy url thanh toán VNpay
+                        $data_url = VNPay::vnpay_create_payment([
+                            // id của đơn hàng
+                            'vnp_TxnRef' => $inserOrderId,
+                            // tổng bill
+                            'vnp_Amount' => $order_total,
+
+                        ]);
+                        // 2. Chuyển hướng đến url lấy được
+                        return redirect()->to($data_url);
                     }
                 } else {
-                    $msg = 'Lưu thông tin đơn hàng bị lỗi';
+                    // thay đổi order_status_id sang trạng thái lỗi
+                    $this->orderRepo->edit([
+                        'order_status_id' => 6
+                    ], $inserOrderId);
+                    $msg = 'Lưu thông tin vào bảng order_details bị lỗi';
+                    $type = 'danger';
                 }
-                return redirect()->route('checkout')->with(['msg' => 'Giỏ hàng trống', 'type' => 'danger']);
-            }elseif($payment_id == 2){
-                // online payment
+            } else {
+                $msg = 'Lưu thông tin đơn hàng bị lỗi';
+                $type = 'success';
             }
-     
-        }else{
-            return redirect()->route('checkout')->with(['msg' => 'Giỏ hàng trống', 'type' => 'danger']);
+            return redirect()->route('checkout.index')->with(['msg' => $msg, 'type' => $type]);
         }
+    }
+    public function vnPayCheck(Request $request)
+    {
+        // 1. Lấy data từ URL (do VNpay trả về qua $vnp_returnUrl)
+        // vào file vnpay_return để xem các key
+        $vnp_ResponseCode = $request->vnp_ResponseCode; // 00 là thành công
+        $vnp_TxnRef = $request->vnp_TxnRef;
+        $vnp_Amount = $request->vnp_Amount;
 
-        // if (!empty($order_total)) {
-        //     $insertAddress = $this->addressRepo->findOrInsert(['address' => $address, 'user_id' => $user_id]);
-
-        //     if ($insertAddress) {
-        //         // lưu thông tin order
-        //         $inserOrder = $this->orderRepo->create([
-        //             'user_id' => Auth::user()->id,
-        //             'address' => $address,
-        //             'payment_method_id' => $payment_id,
-        //             'order_total' => $order_total,
-        //             'order_status_id' => 1
-        //         ]);
-        //         if ($inserOrder) {
-        //             $inserOrderId = $inserOrder->id;
-        //             // lưu thông tin vào bảng order_details
-        //             $cart_items = $this->cartItemRepo->getItemsInSameCart(['cart_id' => $cart_id]);
-        //             if (count($cart_items) > 0) {
-
-        //                 foreach ($cart_items as $cart_item) {
-        //                     $productId = $this->productItemRepo->find($cart_item->product_item_id)->product_id;
-        //                     $product = $this->productRepo->find($productId);
-
-        //                     if ($product->discount > 0) {
-        //                         $final_price = (1 - $product->discount) * ($product->price);
-        //                     } else {
-        //                         $final_price = $product->price;
-        //                     }
-
-        //                     $this->orderDetailRepo->create([
-        //                         'order_id' =>  $inserOrderId,
-        //                         'product_item_id' => $cart_item->product_item_id,
-        //                         'quantity' => $cart_item->quantity,
-        //                         'price' => $final_price
-        //                     ]);
-
-
-        //                     // qty còn lại trong product_items
-        //                     $product_item = $this->productItemRepo->find($cart_item->product_item_id);
-        //                     $product_item->update(['quantity' => $product_item->quantity - $cart_item->quantity]);
-
-        //                     // update số lượng sản phẩm sold, quantity còn lại trong bảng product
-        //                     // $productId = $this->productItemRepo->find($cart_item->product_item_id)->product_id;
-        //                     // $product = $this->productRepo->find($productId);
-        //                     $product->update(['qty_sold' => $product->qty_sold + $cart_item->quantity]);
-        //                     $product->update(['quantity' => $product->quantity - $cart_item->quantity]);
-        //                 }
-
-        //                 // xoá thông tin trong bảng cart_items
-        //                 $deleteCartItemStatus = $this->cartItemRepo->deleteItems(['cart_id' => $cart_id]);
-        //                 if ($deleteCartItemStatus) {
-        //                     $msg = 'Giao dịch thành công';
-        //                 } else {
-        //                     $msg = 'Giao dịch thất bại';
-        //                 }
-        //             } else {
-        //                 $msg = 'Lưu thông tin vào bảng order_details bị lỗi';
-        //             }
-        //         } else {
-        //             $msg = 'Lưu thông tin đơn hàng bị lỗi';
-        //         }
-
-        //         // xoá thông tin cart
-        //     } else {
-        //         $msg = 'Có lỗi khi lưu địa chỉ, vui lòng thử lại';
-        //     }
-        // } else {
-        //     $msg = 'Giỏ hảng trống';
-        // }
-        // return redirect()->route('checkout.index')->with('msg', $msg);
+        // 2. Kiểm tra data, xem kết quả giao dịch trả về có hợp lệ không
+        if (!empty($vnp_ResponseCode)) {
+            if ($vnp_ResponseCode == '00') {
+                // xoá thông tin trong bảng cart_items
+                $cart_id = $this->cartRepository->findByKey('user_id', Auth::user()->id)->id;
+                $deleteCartItemStatus = $this->cartItemRepo->deleteItems(['cart_id' => $cart_id]);
+                if ($deleteCartItemStatus) {
+                    // xoá thông tin trong bảng cart
+                    $this->cartRepository->delete(['id' => $cart_id]);
+                    $msg = 'Giao dịch thành công';
+                    $type = 'success';
+                } else {
+                    $msg = 'Giao dịch thành công mặc dù chưa xoá được ở các bảng cart';
+                    $type = 'success';
+                }
+                return redirect()->route('user.order.order')->with(['msg' => $msg, 'type' => $type]);
+            } else {
+                // order_status // giao dịch online thất bại
+                $this->orderRepo->edit([
+                    'order_status_id' => 6
+                ], $vnp_TxnRef);
+                return redirect()->route('user.order.order')->with(['msg' => 'Giao dịch thất bại', 'type' => 'danger']);
+            }
+        }
     }
 }
