@@ -172,8 +172,10 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'user'])->group(functi
         Route::get('/{id}', [OrderController::class, 'detailOrder'])->name('show');
 
         Route::get('/{order}/review', [ReviewController::class, 'index'])->name('index');
+
         Route::get('/{order}/review/{productItem}', [ReviewController::class, 'review'])->name('review');
         Route::post('/{order}/review/{productItem}', [ReviewController::class, 'postReview']);
+        Route::get('/{order}/cancel', [OrderController::class, 'cancel'])->name('cancel');
     });
 
     

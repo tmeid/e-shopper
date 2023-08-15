@@ -98,7 +98,7 @@
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReview" aria-expanded="true" aria-controls="collapseReview">
             <i class="fas fa-fw fa-cog"></i>
-            <span>Review</span>
+            <span>Đánh giá</span>
         </a>
         <div id="collapseReview" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">

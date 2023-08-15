@@ -32,7 +32,7 @@
 
         <div class="col-lg-7 pb-3">
             <h3 class="font-weight-semi-bold">{{ $product->name }}</h3>
-
+            <p> {{ count($reviews ) }} Đánh giá | {{ $product->qty_sold ?? 0}} Đã bán</p>
             @if($product->discount != null)
             <h3 class="font-weight-semi-bold mb-4">{{ salePrice($product->discount, $product->price) }}đ
                 <del style="font-size: 1.4rem" class="font-weight-light text-muted">{{ number_format($product->price, 0, null, ',') }}đ</del>
@@ -114,7 +114,7 @@
         <div class="col">
             <div class="nav nav-tabs justify-content-center border-secondary mb-4">
                 <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-1">Thông tin</a>
-                <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-2">Review ({{ count($reviews )}})</a>
+                <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-2">Đánh giá ({{ count($reviews )}})</a>
             </div>
             <div class="tab-content">
                 <div class="tab-pane fade" id="tab-pane-1">
@@ -125,7 +125,7 @@
                 <div class="tab-pane fade show active" id="tab-pane-2">
                     <div class="row">
                         <div class="col-md-12">
-                            <h4 class="mb-4">{{ count($reviews )}} Review</h4>
+                            <h4 class="mb-4">{{ count($reviews )}} Đánh giá</h4>
                             @if(count($reviews) > 0)
                             @foreach($reviews as $review)
                             <div class="media mb-4">

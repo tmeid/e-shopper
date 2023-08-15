@@ -276,6 +276,7 @@ Tất cả sản phẩm | E-shopper
                             <h6>{{ number_format($product->price, 0, null, ',') }}đ</h6>
                             @endif
                         </div>
+                        <p>Đã bán: {{ $product->qty_sold ?? 0 }}</p>
                     </div>
                 </div>
                 @endforeach

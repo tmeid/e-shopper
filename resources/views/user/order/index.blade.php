@@ -59,6 +59,12 @@ Thêm danh mục | E-shopper
     <div class="d-flex">
         @if($order->order_status_id == 4)
         <a href="{{ route('user.order.index', ['order' => $order]) }}" class="text-decoration-none" style="width: 50%; display: block;">Đánh giá</a>
+        @elseif($order->order_status_id == 1)
+        <a href="{{ route('user.order.cancel', ['order' => $order]) }}" class="text-decoration-none" style="width: 50%; display: block;"
+            onclick="return confirm('Bạn có chắc chắn huỷ đơn?')"
+        >
+            Huỷ đơn
+        </a>
         @else 
         <div style="width: 50%">&nbsp</div>
         @endif

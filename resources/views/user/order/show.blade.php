@@ -79,6 +79,17 @@ Chi tiết đơn hàng
                     </div>
                 </div>
 
+                @if($order->order_status_id == 5)
+                <div class="position-relative row">
+                    <label for="" class="col-md-3 text-md-right col-form-label">Ngày huỷ đơn:</label>
+                    <div class="col-md-9 col-xl-8 col-form-label">
+                        <p>{{ date('d-m-Y H:i:s', strtotime($order->updated_at)) }}</p>
+                    </div>
+                </div>
+
+
+                @endif
+
                 <div class="position-relative row">
                     <label for="" class="col-md-3 text-md-right col-form-label">Trạng thái đơn hàng:</label>
                     <div class="col-md-9 col-xl-8 col-form-label">
