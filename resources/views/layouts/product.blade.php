@@ -289,7 +289,7 @@
                                 $('.qty-stock').text('0');
                                 $('.add-to-cart-btn').prop('disabled', true);
                                 $('.quantity-btn').prop('disabled', true);
-                                console.log(reponse.msg);
+                               
                             }
 
                         } else {
@@ -297,7 +297,7 @@
                             $('.qty-stock').text('0');
                             $('.add-to-cart-btn').prop('disabled', true);
                             $('.quantity-btn').prop('disabled', true);
-                            console.log(reponse.msg);
+                         
                         }
                     }
                 })

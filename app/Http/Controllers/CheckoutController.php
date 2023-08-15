@@ -116,7 +116,10 @@ class CheckoutController extends Controller
                 if(count($cart_items)){
                     foreach($cart_items as $cart_item){
                         if($cart_item->quantity <= 0){
-                            $fail('Opps, có vài sản phẩm đã hết hàng');
+                            $fail('Opps, có sản phẩm đã hết hàng');
+                            break;
+                        }elseif($cart_item->pivot->quantity  > $cart_item->quantity){
+                            $fail('Opps, có sản phẩm vượt quá số lượng còn lại trong kho');
                             break;
                         }
                     }
@@ -216,7 +219,7 @@ class CheckoutController extends Controller
                     $type = 'danger';
                 }
             } else {
-                $msg = 'Lưu thông tin đơn hàng bị lỗi';
+                $msg = 'Đã có lỗi xảy ra, vui lòng thử lại';
                 $type = 'success';
             }
             return redirect()->route('checkout.index')->with(['msg' => $msg, 'type' => $type]);

@@ -31,11 +31,14 @@ Giỏ hàng | E-Shopper
                         <input type="hidden" class="cart_id" value="{{ $cart_id}}">
                         <td class="align-items-start d-flex flex-wrap">
                             <a href="{{ route('product.detail', ['product' => $noTrashedProduct->slug]) }}"><img src="{{ asset('imgs/products/' .$noTrashedProduct->productImgs->first()->path) }}" alt="{{ $noTrashedProduct->name }}" style="width: 50px; display: block;"></a>
-                            @if($item_order->quantity >= 1)
-                            <span class="mt-1 ml-2"><a style="color:#000" class="text-decoration-none" href="{{ route('product.detail', ['product' => $noTrashedProduct->slug ])}}">{{ $noTrashedProduct->name }} ({{ 'Size: ' .$item_order->size .', màu: ' .$item_order->color }})</a></span>
-                            @else
-                            <span class="mt-1 ml-2"><del><a style="color:#000" class="text-decoration-none" href="{{ route('product.detail', ['product' => $noTrashedProduct->id ])}}">{{ $noTrashedProduct->name }} ({{ 'Size: ' .$item_order->size .', màu: ' .$item_order->color }})</a></del>
+                            @if($item_order->quantity <= 0)
+                            <span class="mt-1 ml-2"><del><a style="color:#000" class="text-decoration-none" href="{{ route('product.detail', ['product' => $noTrashedProduct->slug ])}}">{{ $noTrashedProduct->name }} ({{ 'Size: ' .$item_order->size .', màu: ' .$item_order->color }})</a></del>
                             <span class="text-danger">Hết hàng</span></span>
+                            @elseif($item_order->pivot->quantity >  $item_order->quantity)
+                            <span class="mt-1 ml-2"><a style="color:#000" class="text-decoration-none" href="{{ route('product.detail', ['product' => $noTrashedProduct->slug ])}}">{{ $noTrashedProduct->name }} ({{ 'Size: ' .$item_order->size .', màu: ' .$item_order->color }})</a>
+                            <span class="text-danger">Còn: {{ $item_order->quantity }} sp</span></span>
+                            @else
+                            <span class="mt-1 ml-2"><a style="color:#000" class="text-decoration-none" href="{{ route('product.detail', ['product' => $noTrashedProduct->slug ])}}">{{ $noTrashedProduct->name }} ({{ 'Size: ' .$item_order->size .', màu: ' .$item_order->color }})</a></span>                          
                             @endif
                         </td>
                         <td class="align-middle">
@@ -289,8 +292,10 @@ Giỏ hàng | E-Shopper
                 success: function(response){
                     if(response.status == 'success'){
                         window.location.href = e.target.href;
-                    }else if(response.status == 'fail'){
+                    }else if(response.status == 'sold_out'){
                         alert('Xin vui lòng xoá những sản phẩm hết hàng để đặt hàng');
+                    }else if(response.status == 'exceed_qty'){
+                        alert('Sản phẩm vượt quá số lượng còn lại trong kho');
                     }else if(response.status == 'empty'){
                         alert('Giỏ hàng trống');
                     }

@@ -20,7 +20,7 @@ class OrderController extends Controller
     }
     public function show(Request $request){
         $user_id = Auth::user()->id;
-        $myOrderResult = $this->orderRepo->getAllOrdersPaginate(['user_id' => $user_id], $request);
+        $myOrderResult = $this->orderRepo->getAllOrdersPaginate([['user_id', $user_id], ['order_status_id', '<>', 6]], $request);
         $myOrder = $myOrderResult['orders'];
         $filter_by = $myOrderResult['filterBy'];
         return view('user.order.index')->with(['myOrder' => $myOrder, 'filter_by' => $filter_by]);

@@ -190,11 +190,16 @@ class CartController extends Controller
         if($request->ajax()){
             if(Auth::check()){
                 $cart_id = $request->cart_id;
+                // lấy ra các product_item trong cart
                 $cart_items = $this->cartRepository->getItemsPerUser($cart_id);
                 if(count($cart_items)){
                     foreach($cart_items as $cart_item){
+                        // sản phẩm trong stock đã hết hàng
                         if($cart_item->quantity <= 0){
-                            return response()->json(['status' => 'fail']);
+                            return response()->json(['status' => 'sold_out']);
+                        }else if($cart_item->pivot->quantity > $cart_item->quantity){
+                            // cart_item_qty > qty_stock
+                            return response()->json(['status' => 'exceed_qty']);
                         }
                     }
                     return response()->json(['status' => 'success']);

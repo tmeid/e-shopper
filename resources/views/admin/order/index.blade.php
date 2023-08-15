@@ -33,6 +33,7 @@ Thêm danh mục | E-shopper
         <option value="3" {{ request('filter_by') === '3' ? 'selected' : '' }}>Đang giao</option>
         <option value="4" {{ request('filter_by') === '4' ? 'selected' : '' }}>Đã giao</option>
         <option value="5" {{ request('filter_by') === '5' ? 'selected' : '' }}>Đã huỷ</option>
+        <option value="6" {{ request('filter_by') === '6' ? 'selected' : '' }}>Bị lỗi</option>
     </select>
 </form>
 <div style="overflow-x:auto;">
@@ -63,9 +64,10 @@ Thêm danh mục | E-shopper
                             <option value="3" {{$order->order_status_id == 3 ? 'selected' : '' }}>Đang giao</option>
                             <option value="4" {{$order->order_status_id == 4 ? 'selected' : '' }}>Đã giao</option>
                             <option value="5" {{$order->order_status_id == 5 ? 'selected' : ''  }}>Đã huỷ</option>
+                            <option value="6" {{$order->order_status_id == 6 ? 'selected' : ''  }}>Bị lỗi</option>
                         </select>
                         <input type="submit" name="submit">
-
+                    </form>
                 </td>
                 <td><a href="{{ route('admin.order.detail', ['id' => $order->id])}}">Chi tiết</a></td>
 

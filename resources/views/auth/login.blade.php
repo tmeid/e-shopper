@@ -44,18 +44,6 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Lưu đăng nhập') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
@@ -78,5 +66,13 @@
 <div class="container">
     <p  class="text-center mt-3" style="font-size: 18px;">User: dthuy3319@gmail.com (pass: 123456789)</p>
     <p  class="text-center mt-3" style="font-size: 18px;">Admin: admin@gmail.com (pass: 123456789)</p>
+    <ul class="text-center mt-3 " style="font-size: 18px; list-style-type: none;">
+        <li>Thẻ test VNPAY</li>
+        <li>Ngân hàng: NCB</li>
+        <li>Số thẻ: 9704198526191432198</li>
+        <li>Tên chủ thẻ: NGUYEN VAN A</li>
+        <li>Ngày phát hành: 07/15</li>
+        <li>Mật khẩu OTP: 123456</li>
+    </ul>
 </div>
 @endsection

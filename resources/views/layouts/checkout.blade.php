@@ -15,9 +15,9 @@ Thanh toán | E-Shopper
 
             @endif
 
-            @if($errors->has('cart_id'))
-                <span style="margin: 0 auto;" class="alert alert-danger inline-block">Opps, có vài sản phẩm đã hết</span>
-            @endif
+            @error('cart_id')   
+                <span style="margin: 0 auto;" class="alert alert-danger inline-block">{{ $message }}</span>
+            @enderror
             <table class="table table-bordered text-center mb-0" style="color:#000">
                 <thead class="bg-secondary text-dark">
                     <tr>

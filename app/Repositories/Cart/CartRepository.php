@@ -19,7 +19,7 @@ class CartRepository extends BaseRepository implements CartRepositoryInterface{
     public function findUserInCart($data){
         return $this->model->where($data)->first();
     }
-
+    // lẩy ra các items trong cart của 1 user nhưng đã subquery với bảng product_items
     public function getItemsPerUser($cart_id){
         return $this->model->find($cart_id)->productItems;
     }
