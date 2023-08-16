@@ -4,6 +4,7 @@ namespace App\Repositories\Category;
 use App\Models\Category;
 use App\Repositories\BaseRepository;
 use App\Repositories\Category\CategoryRepositoryInterface;
+use Illuminate\Support\Facades\DB;
 
 class CategoryRepository extends BaseRepository implements CategoryRepositoryInterface{
     public function getModel(){
@@ -19,6 +20,9 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
 
     public function getCategoriesWithCountProduct($relation){
         return $this->model::withCount($relation)->get();
+    }
+    public function getLimitCategoriesWithCountProduct($relation, $limit){
+        return $this->model::withCount($relation)->limit($limit)->get();
     }
 
     public function getId($data){

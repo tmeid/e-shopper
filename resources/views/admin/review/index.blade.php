@@ -1,7 +1,7 @@
 @extends('dashboard')
 
 @section('title')
-Review | E-shopper
+Đánh giá | E-shopper
 @endsection
 
 @section('dashboard-type')

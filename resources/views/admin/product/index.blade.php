@@ -1,7 +1,7 @@
 @extends('dashboard')
 
 @section('title')
-Thêm danh mục | E-shopper
+Quản lý sản phẩm | E-shopper
 @endsection
 
 @section('dashboard-type')

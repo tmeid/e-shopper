@@ -44,18 +44,6 @@
         </div>
     </li>
 
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProceeds" aria-expanded="true" aria-controls="collapseProceeds">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Doanh thu</span>
-        </a>
-        <div id="collapseProceeds" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="">Xem</a>
-            </div>
-        </div>
-    </li>
-
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCategory" aria-expanded="true" aria-controls="collapseCategory">

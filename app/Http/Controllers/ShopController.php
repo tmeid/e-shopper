@@ -39,6 +39,9 @@ class ShopController extends Controller
         $id = null;
         if(!empty($slug)){
             $id = $this->categoryRepo->getId(['slug' => $slug]);
+            if(!$id){
+                abort('404');
+            }
         }
         $categories = $this->categoryRepo->getAll();
         $colors = $this->productItemRepo->getDistinctColor();

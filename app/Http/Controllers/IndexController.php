@@ -35,17 +35,16 @@ class IndexController extends Controller
     }
 
     public function index(){
-        $featuredProducts = $this->featuredProducts();
+        $num_featured_category = 3;
         $categories = $this->categoryRepo->getAll();
-        $categoriesWithCountProduct = $this->getCategories();
+        $categoriesWithCountProduct = $this->categoryRepo->getLimitCategoriesWithCountProduct('products', $num_featured_category);
         $productImgs = $this->productImgRepo->getAll();
-        $featuredProds = $this->productRepo->featuredProd();
+        $featuredProds = $this->productRepo->getFeaturedProduct(8);
 
         // count the number of cart items
         $total_items_order =  countItemsCartEachUser($this->cartRepo, $this->cartItemRepo);
 
         return view('layouts.home')->with([
-            'featuredProducts' => $featuredProducts,
             'categoriesWithCountProduct' => $categoriesWithCountProduct,
             'categories' => $categories,
             'total_items_order' => $total_items_order,
@@ -54,25 +53,4 @@ class IndexController extends Controller
         ]);
     }
 
-    
-    public function featuredProducts(){
-        // get the first 3 category id
-        $total_categories = 3;
-        $categories = $this->categoryRepo->limit($total_categories);
-        $category_ids = $this->categoryRepo->getValuesByKey($categories, 'id');
-        
-        $featuredProducts = [];
-        if(count($category_ids) > 0){
-            foreach($category_ids as $id){
-                $featuredProducts[] = $this->productRepo->getFeaturedProduct($id, 4);
-            }
-            return $featuredProducts;
-        }
-        
-
-    }
-
-    public function getCategories(){
-        return $this->categoryRepo->getCategoriesWithCountProduct('products');
-    }
 }

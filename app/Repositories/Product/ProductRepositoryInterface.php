@@ -11,7 +11,7 @@ interface ProductRepositoryInterface extends RepositoryInterface{
 
     // home
     // featured product 
-    public function getFeaturedProduct($category_id, $limit);
+    public function getFeaturedProduct($limit);
 
     // products: paginate 
     public function productPaginate($request, $category_id);

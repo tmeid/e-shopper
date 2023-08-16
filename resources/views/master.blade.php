@@ -42,7 +42,7 @@
                     <h1 class="m-0 display-5 font-weight-semi-bold"><a class="text-decoration-none" href="{{ route('home') }}"><span class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</a></h1>
                 </a>
             </div>
-            <div class="col-lg-6 col-6 text-left">
+            <div class="col-lg-6 col-8 text-left">
                 <form action="{{ route('shop.products') }}">
                     <div class="input-group">
                         <input name="search" type="text" class="form-control" placeholder="Tìm..." value="{{ request('search') }}">
@@ -55,7 +55,7 @@
                 </form>
             </div>
            
-            <div class="col-lg-3 col-6 text-right">
+            <div class="col-lg-3 col-4 text-right">
                 <a href="{{ route('cart') }}" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
                     <span class="badge">{{ $total_items_order }}</span>

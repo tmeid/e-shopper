@@ -47,7 +47,7 @@ class BrandController extends Controller
       }
   
       public function edit(Brand $brand){
-        return view('admin.category.edit')->with('category', $brand);
+        return view('admin.brand.edit')->with('brand', $brand);
       }
   
       public function postEdit(Request $request, Brand $brand){

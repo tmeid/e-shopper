@@ -48,8 +48,8 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         
     }
 
-    public function getFeaturedProduct($category_id, $limit){
-        return $this->model->where('category_id', $category_id)->where('featured', 1)->limit($limit)->get();
+    public function getFeaturedProduct($limit){
+        return $this->model->where('featured', 1)->limit($limit)->get();
     }
 
     // use in soft delete: restore and force delete 

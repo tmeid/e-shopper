@@ -22,6 +22,8 @@ Admin Dashboard
         <p><span>2. Đang vận chuyển: {{ $orders->where('order_status_id', 2)->count() }}</span></p>
         <p><span>2. Đang giao: {{ $orders->where('order_status_id', 3)->count() }}</span></p>
         <p><span>3. Đã giao: {{ $orders->where('order_status_id', 4)->count() }}</span></p>
+        <p><span>3. Đơn huỷ: {{ $orders->where('order_status_id', 5)->count() }}</span></p>
+        <p><span>3. Lỗi: {{ $orders->where('order_status_id', 6)->count() }}</span></p>
     @else 
     <p>Khách chưa mua đơn nào</p>
     @endif

@@ -101,7 +101,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
         Route::get('/{product}/sub-item/delete/{sub_item}', [SubProductController::class, 'delete'])->name('sortDeleteSub');
         Route::get('/{product}/sub-item/restore/{id}', [SubProductController::class, 'restore'])->name('restoreSub');
         Route::delete('/{product}/sub-item/force-delete', [SubProductController::class, 'forceDelete'])->name('forceDeleteSub');
-    
+        
     });
 
     // manage order
