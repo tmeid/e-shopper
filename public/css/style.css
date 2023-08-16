@@ -1,3 +1,9 @@
+.link-hover:hover,
+.libk-hover:active,
+.text-dark.link-hover:hover,
+.text-dark.link-hover:active{
+    color: #D19C97!important;
+}
 .custom-dropdown-menu{
     left: initial!important;
     right: 0!important;
@@ -96,6 +102,7 @@
   
 
 }
+
 /* review page  */
 @media screen and (max-width: 768px) {
     .price{
@@ -125,5 +132,15 @@
     .mobile-view{
         display: block;
         visibility: visible;
+    }
+}
+
+/* product detatil  */
+@media screen and (max-width: 576px){
+    .pb-5, .py-5 {
+        padding-bottom: 1rem !important;
+    }
+    .pt-5, .py-5 {
+        padding-top: 1rem !important;
     }
 }

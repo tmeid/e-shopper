@@ -1,7 +1,7 @@
 @extends('master')
 
 @section('title')
-Tất cả sản phẩm | E-shopper
+Tất cả sản phẩm | E-Shopper
 @endsection
 
 @section('content')

@@ -150,10 +150,18 @@ class SubProductController extends Controller
     public function delete(Product $product, ProductItem $sub_item){
         $id = $sub_item->id;
         if($this->productItemRepo->find($id)){
+            $product_item_qty = $sub_item->quantity;
+            $product_parent = $sub_item->product;
+
             $deletedNum = $this->productItemRepo->delete($id);
             if($deletedNum){
                 $msg = 'Xoá mềm thành công';
                 $type = 'success';
+                // solf delete sub item thành công thì trừ bớt số lượng trong product cha
+                // vì giờ số lượng của sub_item bị xoá = 0
+                $this->productRepo->edit([
+                    'quantity' => $product_parent->quantity - $product_item_qty 
+                ], $product_parent->id);
             }else{
                 $msg = 'Đã có lỗi xảy ra';
                 $type = 'danger';
@@ -167,9 +175,17 @@ class SubProductController extends Controller
     }
 
     public function restore(Product $product, $id){
-        $trashedUser = $this->productItemRepo->getTrashed($id);
-        if($trashedUser){
-            $trashedUser->restore();
+        $trashedProductItem = $this->productItemRepo->getTrashed($id);
+        if($trashedProductItem){
+            $trashedProductItem->restore();
+
+            // tăng qty của product cha 
+            $sub_item = $this->productItemRepo->find($id);
+            $product_parent = $sub_item->product;
+            $this->productRepo->edit([
+                'quantity' => $product_parent->quantity + $sub_item->quantity
+            ], $product_parent->id);
+
             $msg = 'Khôi phục thành công';
             $type = 'success';
         }else{
@@ -181,9 +197,15 @@ class SubProductController extends Controller
 
     public function forceDelete(Product $product, Request $request){
         $id = $request->id;
-        $trashedUser = $this->productItemRepo->getTrashed($id);
-        if($trashedUser){
-            $trashedUser->forceDelete();
+        $trashedProductItem = $this->productItemRepo->getTrashed($id);
+        $qtyTrashedProductItem =  $trashedProductItem->quantity;
+        if($trashedProductItem){
+            $trashedProductItem->forceDelete();
+            // cập nhật lại qty của product cha 
+            $this->productRepo->edit([
+                'quantity' => $product->quantity - $qtyTrashedProductItem
+            ], $product->id);
+            
             $msg = 'Xoá thành công';
             $type = 'success';
         }else{

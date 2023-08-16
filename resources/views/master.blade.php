@@ -12,7 +12,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('imgs/favicon-16x16.png') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+   
 
     <!-- Google Web Fonts -->
     <link href="{{ asset('vendor/css/fonts.css') }}" rel="stylesheet">
@@ -27,6 +27,7 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{{ asset('vendor/css/style.css') }}" rel="stylesheet">
 
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('vendor/js/jquery.min.js') }}"></script>
 
@@ -146,12 +147,12 @@
     <footer class="container-fluid bg-secondary text-dark mt-5 pt-5">
         <div class="row px-xl-5 pt-5">
             <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
-                <a href="{{ route('home') }}" class="text-decoration-none">
-                    <h1 class="mb-4 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border border-white px-3 mr-1">E</span>Shopper</h1>
-                </a>
+                
+                <h1 class="mb-4 display-5 font-weight-semi-bold"><a href="{{ route('home') }}" class="text-dark text-decoration-none link-hover"><span class="text-primary font-weight-bold border border-white px-3 mr-1">E</span>Shopper</a></h1>
+                
                 <p>Chúng tôi luôn hướng đến sự tự tin, sang trọng và thanh lịch trong cuộc sống</p>
                 <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Nguyễn Lương Bằng, Đà Nẵng</p>
-                <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>eshopper@gmail.com</p>
+                <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>eshopper.dn@gmail.com</p>
                 <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
             </div>
             <div class="col-lg-8 col-md-12">
@@ -159,8 +160,8 @@
                     <div class="col-md-4 mb-5">
                         <h5 class="font-weight-bold text-dark mb-4">Links</h5>
                         <div class="d-flex flex-column justify-content-start">
-                            <a class="text-dark mb-2" href="{{ route('home') }}"><i class="fa fa-angle-right mr-2"></i>Trang chủ</a>
-                            <a class="text-dark mb-2" href="{{ route('shop.products') }}"><i class="fa fa-angle-right mr-2"></i>Shop now</a>
+                            <a class="text-dark mb-2 text-decoration-none link-hover" href="{{ route('home') }}"><i class="fa fa-angle-right mr-2"></i>Trang chủ</a>
+                            <a class="text-dark mb-2 text-decoration-none link-hover" href="{{ route('shop.products') }}"><i class="fa fa-angle-right mr-2"></i>Shop now</a>
                         </div>
                     </div>               
                 </div>
@@ -169,8 +170,8 @@
         <div class="row border-top border-light mx-xl-5 py-4">
             <div class="col px-xl-0">
                 <p class="mb-md-0 text-center text-md-left text-dark">
-                    &copy; <a class="text-dark font-weight-semi-bold" href="{{ route('home') }}">E-Shopper</a>. All Rights Reserved. Designed
-                    by <a class="text-dark font-weight-semi-bold" href="https://htmlcodex.com">HTML Codex. </a>
+                    &copy; <a class="text-dark font-weight-semi-bold text-decoration-none link-hover" href="{{ route('home') }}">E-Shopper</a>. All Rights Reserved. Designed
+                    by <a class="text-dark font-weight-semi-bold text-decoration-none link-hover" href="https://htmlcodex.com">HTML Codex. </a>
                     Customized by Diem Thuy Huynh
                 </p>
             </div>
