@@ -135,12 +135,28 @@
     }
 }
 
-/* product detatil  */
+
 @media screen and (max-width: 576px){
+    /* product detatil  */
     .pb-5, .py-5 {
         padding-bottom: 1rem !important;
     }
     .pt-5, .py-5 {
         padding-top: 1rem !important;
+    }
+
+    /* products */
+    /* filter price  */
+    .products-section .range-price{
+        width: 40%!important;
+    }
+    /* other filter  */
+    .products-section .mb-3, 
+    .products-section .my-3 {
+        margin-bottom: 0.5rem!important;
+    }
+    .products-section .mb-4, 
+    .products-section .my-4 {
+        margin-bottom: 1rem!important;
     }
 }

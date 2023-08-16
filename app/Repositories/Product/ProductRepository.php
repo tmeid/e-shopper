@@ -72,7 +72,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         if(!empty($request->show) && filter_var($request->show, FILTER_VALIDATE_INT)){
             $perPage = trim($request->show);
         }else{
-            $perPage = 9;
+            $perPage = 8;
         }
         if(!empty($request->sort_by)){
             $sort_by = trim($request->sort_by);

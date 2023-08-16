@@ -195,11 +195,14 @@
                     <h6>{{ number_format($relatedProduct->price, 0, null, ',') }}đ</h6>
                     @endif
                 </div>
+                <p>Đã bán: {{ $product->qty_sold ?? 0 }}</p>
             </div>
         </div>
         @endforeach
         @else
-        <p>Chưa có sản phẩm liên quan</p>
+        <div class="col">
+            <p>Chưa có sản phẩm liên quan</p>
+        </div>    
         @endif
     </div>
 </div>

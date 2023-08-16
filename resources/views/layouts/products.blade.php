@@ -7,7 +7,7 @@ Tất cả sản phẩm | E-Shopper
 @section('content')
 <!-- Shop Start -->
 <div class="container-fluid">
-    <div class="row px-xl-5">
+    <div class="row px-xl-5 products-section">
         <!-- Shop Sidebar Start -->
         <div class="col-lg-2 col-md-12">
             <!-- Price Start -->
@@ -89,10 +89,12 @@ Tất cả sản phẩm | E-Shopper
 
                         @if(isset($categories) && count($categories) > 0)
                         @foreach($categories as $category)
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" onchange="this.form.submit()" name="category[]" class="custom-control-input" id="{{ $category->id }}" value="{{ $category->id }}" {{ request('category') && in_array($category->id, request('category')) ? 'checked' : '' }}>
-                            <label class="custom-control-label" for="{{ $category->id }}">{{ $category->name }}</label>
-                        </div>
+                            @if(count($category->products))
+                            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                                <input type="checkbox" onchange="this.form.submit()" name="category[]" class="custom-control-input" id="{{ $category->id }}" value="{{ $category->id }}" {{ request('category') && in_array($category->id, request('category')) ? 'checked' : '' }}>
+                                <label class="custom-control-label" for="{{ $category->id }}">{{ $category->name }}</label>
+                            </div>
+                            @endif
                         @endforeach
                         @endif
                     </form>
