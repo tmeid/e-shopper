@@ -64,7 +64,34 @@ class UserController extends Controller
     }
 
     public function editInfo(Request $request){
-
+        $user_id = Auth::user()->id;
+        $request->validate([
+            'name' => 'required',
+            'email' => "required|unique:users,email," .$user_id,
+            'phone' => ['required', function($attribute, $value, $fail){
+                $reg = '/(\+84|0)[35789]([0-9]{8})$/';
+                if(!preg_match($reg, $value)){
+                    $fail('Định dạng số điện thoại không hợp lệ');
+                }
+            }]
+            
+        ], [
+            'required' => 'Bị trống',
+            'unique' => 'Email đã tồn tại'
+        ]);
+        $updateStatus = $this->userRepo->edit([
+            'name' => trim($request->name),
+            'email' => trim($request->email),
+            'phone' => trim($request->phone)
+        ], $user_id);
+        if($updateStatus){
+            $msg = 'Thay đổi thông tin thành công';
+            $type = 'success';
+        }else{
+            $msg = 'Có lỗi xảy ra, vui lòng thử lại';
+            $type = 'danger';
+        }
+        return redirect()->route('user.info.infoUser')->with(['msg' => $msg, 'type' => $type]);
     }
 
    

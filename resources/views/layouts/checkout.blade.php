@@ -32,22 +32,28 @@ Thanh toán | E-Shopper
                     @foreach($items_order as $item_order)
                     <tr class="product_data">
                         @php
-                            $noTrashedProduct = $item_order->noTrashedProduct;
+                            $product = $item_order->product;
                         @endphp
                         <td class="align-items-start d-flex flex-wrap">
-                            <a href="{{ route('product.detail', ['product' => $noTrashedProduct->slug]) }}"><img src="{{ asset('imgs/products/' .$noTrashedProduct->productImgs->first()->path) }}" alt="{{ $noTrashedProduct->name }}" style="width: 50px; display: block;"></a>
-                            @if($item_order->quantity >= 1)
-                            <span class="mt-1 ml-2"><a style="color:#000" class="text-decoration-none" href="{{ route('product.detail', ['product' => $noTrashedProduct->slug ])}}">{{ $noTrashedProduct->name }} ({{ 'Size: ' .$item_order->size .', màu: ' .$item_order->color }})</a></span>
-                            @else
-                            <span class="mt-1 ml-2"><del><a style="color:#000" class="text-decoration-none" href="{{ route('product.detail', ['product' => $noTrashedProduct->slug ])}}">{{ $noTrashedProduct->name }} ({{ 'Size: ' .$item_order->size .', màu: ' .$item_order->color }})</a></del>
+                            <a href="{{ route('product.detail', ['product' => $product->slug]) }}"><img src="{{ asset('imgs/products/' .$product->productImgs->first()->path) }}" alt="{{ $product->name }}" style="width: 50px; display: block;"></a>
+                            @if($product->trashed())
+                            <span class="mt-1 ml-2"><del><a style="color:#000" class="text-decoration-none" href="{{ route('product.detail', ['product' => $product->slug ])}}">{{ $product->name }} ({{ 'Size: ' .$item_order->size .', màu: ' .$item_order->color }})</a></del>
+                            <span class="text-danger">Ngừng kinh doanh</span></span>
+                            @elseif($item_order->quantity <= 0 || $item_order->trashed())
+                            <span class="mt-1 ml-2"><del><a style="color:#000" class="text-decoration-none" href="{{ route('product.detail', ['product' => $product->slug ])}}">{{ $product->name }} ({{ 'Size: ' .$item_order->size .', màu: ' .$item_order->color }})</a></del>
                             <span class="text-danger">Hết hàng</span></span>
+                            @elseif($item_order->pivot->quantity >  $item_order->quantity)
+                            <span class="mt-1 ml-2"><a style="color:#000" class="text-decoration-none" href="{{ route('product.detail', ['product' => $product->slug ])}}">{{ $product->name }} ({{ 'Size: ' .$item_order->size .', màu: ' .$item_order->color }})</a>
+                            <span class="text-danger">Chỉ còn: {{ $item_order->quantity }} sp</span></span>
+                            @else
+                            <span class="mt-1 ml-2"><a style="color:#000" class="text-decoration-none" href="{{ route('product.detail', ['product' => $product->slug ])}}">{{ $product->name }} ({{ 'Size: ' .$item_order->size .', màu: ' .$item_order->color }})</a></span>                          
                             @endif
                         </td>
                         <td class="align-middle">
-                            @if($noTrashedProduct->discount > 0)
-                            <span class="ml-2 inline-block">₫{{ number_format((1- $noTrashedProduct->discount)*($noTrashedProduct->price), 0, null, '.')}}</span>
+                            @if($product->discount > 0)
+                            <span class="ml-2 inline-block">₫{{ number_format((1- $product->discount)*($product->price), 0, null, '.')}}</span>
                             @else
-                            <span>₫{{ number_format(($noTrashedProduct->price), 0, null, '.') }}</span>
+                            <span>₫{{ number_format(($product->price), 0, null, '.') }}</span>
                             @endif
 
                         </td>
@@ -55,12 +61,12 @@ Thanh toán | E-Shopper
                             <span class="bg-secondary text-center d-block">{{ $item_order->pivot->quantity }}</span>
                         </td>
                         <td class="align-middle cash-{{ $item_order->id }} subtotal">
-                            @if($item_order->quantity <= 0)
+                            @if($item_order->quantity <= 0 || $item_order->trashed() || $product->trashed())
                                 ₫0
-                            @elseif($noTrashedProduct->discount > 0)
-                            ₫{{ number_format((1- $noTrashedProduct->discount)*($noTrashedProduct->price)*($item_order->pivot->quantity), 0, null, '.')}}
+                            @elseif($product->discount > 0)
+                            ₫{{ number_format((1- $product->discount)*($product->price)*($item_order->pivot->quantity), 0, null, '.')}}
                             @else
-                            ₫{{ number_format(($noTrashedProduct->price)*($item_order->pivot->quantity), 0, null, '.') }}
+                            ₫{{ number_format(($product->price)*($item_order->pivot->quantity), 0, null, '.') }}
                             @endif
                         </td>
                     </tr>

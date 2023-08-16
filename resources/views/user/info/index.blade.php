@@ -11,6 +11,12 @@ Thông tin cá nhân | E-shopper
 @section('content')
 <div class="container">
     <h2>Thông tin cá nhân</h2>
+    @if(session('msg'))
+    <p class="alert alert-{{ session('type') }}" style="width: 300px; margin: 0 auto 10px;">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+        {{ session('msg') }}
+    </p>
+    @endif
     <div class="row">
         <div class="col-12">
             <form action="" method="POST">

@@ -33,7 +33,7 @@ class CartController extends Controller
 
     public function index()
     {
-        $categories = $this->categoryRepo->getAll();
+        $categories = $this->categoryRepo->getCategoriesAtLeastOneProduct();
 
         // count the number of items per user in cart_items table
         $total_items_order =  countItemsCartEachUser($this->cartRepository, $this->cartItemRepo);

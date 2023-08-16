@@ -58,9 +58,9 @@ class CheckoutController extends Controller
     //
     public function index()
     {
-        $categories = $this->categoryRepo->getAll();
+        $categories = $this->categoryRepo->getCategoriesAtLeastOneProduct();
 
-        // count the number of items per user in cart_items table
+        // count the number of items (with trashed) per user in cart_items table
         $total_items_order =  countItemsCartEachUser($this->cartRepository, $this->cartItemRepo);
 
         $user_id = Auth::user()->id;
@@ -72,17 +72,19 @@ class CheckoutController extends Controller
             $totalPrice = 0;
             $payments = $this->paymentRepo->getAll();
 
-            $items_order = $this->cartRepository->getItemsPerUser($cart_id);
+            $items_order = $this->cartRepository->getItemsWithTrashedPerUser($cart_id);
 
             foreach ($items_order as $item_order) {
-                if($item_order->quantity >= 1){
-                    $noTrashedProduct = $item_order->noTrashedProduct;
-                    if ($noTrashedProduct->discount > 0) {
-                        $price = (1 - $noTrashedProduct->discount) * ($noTrashedProduct->price) * ($item_order->pivot->quantity);
-                    } else {
-                        $price = ($noTrashedProduct->price) * ($item_order->pivot->quantity);
+                if($item_order->quantity >= 1 && !$item_order->trashed()){
+                    $product = $item_order->noTrashedProduct;
+                    if($product){
+                        if ($product->discount > 0) {
+                            $price = (1 - $product->discount) * ($product->price) * ($item_order->pivot->quantity);
+                        } else {
+                            $price = ($product->price) * ($item_order->pivot->quantity);
+                        }
+                        $totalPrice += $price;
                     }
-                    $totalPrice += $price;
                 }
             }
 
@@ -112,18 +114,31 @@ class CheckoutController extends Controller
             'payment' => 'required',
             'cart_id' => [function($attribute, $value, $fail){
                 $cart_id = $value;
-                $cart_items = $this->cartRepository->getItemsPerUser($cart_id);
-                if(count($cart_items)){
-                    foreach($cart_items as $cart_item){
-                        if($cart_item->quantity <= 0){
-                            $fail('Opps, có sản phẩm đã hết hàng');
-                            break;
-                        }elseif($cart_item->pivot->quantity  > $cart_item->quantity){
-                            $fail('Opps, có sản phẩm vượt quá số lượng còn lại trong kho');
-                            break;
+                $cart_info = $this->cartRepository->findByKey('user_id', Auth::user()->id);
+                if($cart_id == $cart_info->id){
+                    $cart_items = $this->cartRepository->getItemsWithTrashedPerUser($cart_id);            
+                    if(count($cart_items)){
+                        foreach($cart_items as $cart_item){
+                            $product = $cart_item->product;
+                            if($product->trashed()){
+                                $fail('Vui lòng xoá sản phẩm ngừng kinh doanh');
+                                break;
+                            }elseif($cart_item->quantity <= 0 || $cart_item->trashed()){
+                                $fail('Vui lòng xoá sản phẩm hết hàng');
+                                break;
+                            }elseif($cart_item->pivot->quantity >  $cart_item->quantity){
+                                $fail('Vượt quá số lượng có sẵn');
+                                break;
+                            }
                         }
+                    }else{
+                        $fail('Opps, Lỗi');
                     }
+                }else{
+                    $fail('Opps, cart_id k hợp lệ');
                 }
+                
+                
             }]
         ], [
             'address.required' => 'Chưa nhập địa chỉ',
