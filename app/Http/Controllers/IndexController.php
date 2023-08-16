@@ -36,7 +36,7 @@ class IndexController extends Controller
 
     public function index(){
         $num_featured_category = 3;
-        $categories = $this->categoryRepo->getAll();
+        $categories = $this->categoryRepo->getCategoriesAtLeastOneProduct();
         $categoriesWithCountProduct = $this->categoryRepo->getLimitCategoriesWithCountProduct('products', $num_featured_category);
         $productImgs = $this->productImgRepo->getAll();
         $featuredProds = $this->productRepo->getFeaturedProduct(8);
