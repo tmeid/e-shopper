@@ -43,7 +43,7 @@ class ShopController extends Controller
                 abort('404');
             }
         }
-        $categories = $this->categoryRepo->getAll();
+        $categories = $this->categoryRepo->getCategoriesAtLeastOneProduct();
         $colors = $this->productItemRepo->getDistinctColor();
 
         $productsResult = $this->productRepo->productPaginate($request, $id);

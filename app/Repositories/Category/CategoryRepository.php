@@ -22,7 +22,7 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
         return $this->model::withCount($relation)->get();
     }
     public function getLimitCategoriesWithCountProduct($relation, $limit){
-        return $this->model::withCount($relation)->limit($limit)->get();
+        return $this->model->has('products')->withCount($relation)->limit($limit)->get();
     }
 
     public function getId($data){
@@ -44,6 +44,10 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
         // sort 
         $query = $query->orderBy('created_at', 'DESC');
         return $query->get();
+    }
+
+    public function getCategoriesAtLeastOneProduct(){
+        return $this->model->has('products')->get();
     }
     
 }

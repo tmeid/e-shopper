@@ -87,10 +87,8 @@
                                 <div class="dropdown-menu rounded-0 m-0">
                                     @if(count($categories))
                                     @foreach($categories as $category)
-                                        @if(count($category->products) > 0)
                                         <a href="{{ route('shop.category', ['category' => $category->slug]) }}" class="dropdown-item">{{ $category->name }}</a>
-                                        @endif
-                                        @endforeach
+                                    @endforeach
                                     @endif
                                    
                                 </div>
