@@ -195,24 +195,4 @@ class SubProductController extends Controller
         return redirect()->route('admin.product.showSubItems', ['product_id' => $product->id])->with(['msg' => $msg, 'type' => $type]);
     }
 
-    public function forceDelete(Product $product, Request $request){
-        $id = $request->id;
-        $trashedProductItem = $this->productItemRepo->getTrashed($id);
-        $qtyTrashedProductItem =  $trashedProductItem->quantity;
-        if($trashedProductItem){
-            $trashedProductItem->forceDelete();
-            // cập nhật lại qty của product cha 
-            $this->productRepo->edit([
-                'quantity' => $product->quantity - $qtyTrashedProductItem
-            ], $product->id);
-            
-            $msg = 'Xoá thành công';
-            $type = 'success';
-        }else{
-            $msg = 'Sản phẩm không tồn tại';
-            $type = 'danger';
-        }
-        return redirect()->route('admin.product.showSubItems', ['product_id' => $product->id])->with(['msg' => $msg, 'type' => $type]);
-    }
-
 }

@@ -15,7 +15,7 @@ class AddForignKeyProductItemTable extends Migration
     {
         //
         Schema::table('product_items', function(Blueprint $table){
-            $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade')->onDelete('set null');
+            $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade')->onDelete('restrict');
         });
     }
 

@@ -65,7 +65,7 @@ Admin Dashboard
                     @endif
                 </td>
                 <td style="text-align: center;">
-                    @if(!$user->trashed())
+                    @if(!$user->trashed() && $user->role != 1)
                     <a href="{{ route('admin.user.sortDelete', ['user' => $user]) }}" class="" style="font-size: 15px;" onclick="return confirm('Bạn có chắc chắn tạm xoá?')">
                         <i class="fa fa-trash-can" style="color:green;"></i>
                     </a>

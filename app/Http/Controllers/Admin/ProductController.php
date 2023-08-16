@@ -233,18 +233,4 @@ class ProductController extends Controller
         }
         return redirect()->route('admin.product.list')->with(['msg' => $msg, 'type' => $type]);
     }
-
-    public function forceDelete(Request $request){
-        $id = $request->id;
-        $trashedUser = $this->productRepo->getTrashedProduct($id);
-        if($trashedUser){
-            $trashedUser->forceDelete();
-            $msg = 'Xoá thành công';
-            $type = 'success';
-        }else{
-            $msg = 'Sản phẩm không tồn tại';
-            $type = 'danger';
-        }
-        return redirect()->route('admin.product.list')->with(['msg' => $msg, 'type' => $type]);
-    }
 }

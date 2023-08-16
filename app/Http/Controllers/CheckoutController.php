@@ -237,6 +237,7 @@ class CheckoutController extends Controller
         if (!empty($vnp_ResponseCode)) {
             if ($vnp_ResponseCode == '00') {
                 // xoá thông tin trong bảng cart_items
+                // mỗi user chỉ có duy nhất 1 record trong bảng cart
                 $cart_id = $this->cartRepository->findByKey('user_id', Auth::user()->id)->id;
                 $deleteCartItemStatus = $this->cartItemRepo->deleteItems(['cart_id' => $cart_id]);
                 if ($deleteCartItemStatus) {

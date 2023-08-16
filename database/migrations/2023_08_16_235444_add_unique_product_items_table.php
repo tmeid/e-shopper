@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddUniqueConstraintProductItemsTable extends Migration
+class AddUniqueProductItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,7 +15,6 @@ class AddUniqueConstraintProductItemsTable extends Migration
     {
         //
         Schema::table('product_items', function(Blueprint $table){
-            $table->dropUnique('product_items_sku_unique');
             $table->unique('sku');
         });
     }

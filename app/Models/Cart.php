@@ -16,4 +16,9 @@ class Cart extends Model
                     ->withPivot('quantity')->withPivot('id');
     }
 
+    public function productItemsWithTrashed(){
+        return $this->belongsToMany(ProductItem::class, 'cart_items', 'cart_id', 'product_item_id')
+                    ->withPivot('quantity', 'id')->withTrashed();
+    }
+
 }

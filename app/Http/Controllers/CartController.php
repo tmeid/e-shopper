@@ -45,17 +45,20 @@ class CartController extends Controller
             $cart_id = $cart_info->id;
             $totalPrice = 0;
 
-            $items_order = $this->cartRepository->getItemsPerUser($cart_id);
+            $items_order = $this->cartRepository->getItemsWithTrashedPerUser($cart_id);
 
+            // chỉ tính tổng tiền các sản phẩm không bị xoá mềm
             foreach ($items_order as $item_order) {
-                if($item_order->quantity >= 1){
-                    $noTrashedProduct = $item_order->noTrashedProduct;
-                    if ($noTrashedProduct->discount > 0) {
-                        $price = (1 - $noTrashedProduct->discount) * ($noTrashedProduct->price) * ($item_order->pivot->quantity);
-                    } else {
-                        $price = ($noTrashedProduct->price) * ($item_order->pivot->quantity);
+                if($item_order->quantity >= 1 && !$item_order->trashed()){
+                    $product = $item_order->noTrashedProduct;
+                    if($product){
+                        if ($product->discount > 0) {
+                            $price = (1 - $product->discount) * ($product->price) * ($item_order->pivot->quantity);
+                        } else {
+                            $price = ($product->price) * ($item_order->pivot->quantity);
+                        }
+                        $totalPrice += $price;
                     }
-                    $totalPrice += $price;
                 }
                 
             }
@@ -190,16 +193,19 @@ class CartController extends Controller
         if($request->ajax()){
             if(Auth::check()){
                 $cart_id = $request->cart_id;
-                // lấy ra các product_item trong cart
-                $cart_items = $this->cartRepository->getItemsPerUser($cart_id);
+                // lấy ra các product_item (bao gồm xoá mềm) trong cart
+                $cart_items = $this->cartRepository->getItemsWithTrashedPerUser($cart_id);
                 if(count($cart_items)){
                     foreach($cart_items as $cart_item){
                         // sản phẩm trong stock đã hết hàng
-                        if($cart_item->quantity <= 0){
+                        if($cart_item->quantity <= 0 || $cart_item->trashed()){
                             return response()->json(['status' => 'sold_out']);
                         }else if($cart_item->pivot->quantity > $cart_item->quantity){
                             // cart_item_qty > qty_stock
                             return response()->json(['status' => 'exceed_qty']);
+                        }else if($cart_item->product->trashed()){
+                             // ngừng kinh doanh
+                             return response()->json(['status' => 'out_of_business']);
                         }
                     }
                     return response()->json(['status' => 'success']);

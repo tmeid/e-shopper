@@ -24,6 +24,10 @@ class CartRepository extends BaseRepository implements CartRepositoryInterface{
         return $this->model->find($cart_id)->productItems;
     }
 
+    public function getItemsWithTrashedPerUser($cart_id){
+        return $this->model->find($cart_id)->productItemsWithTrashed;
+    }
+
     public function findByKeys($condition){
         return $this->model->where($condition)->first();
     }

@@ -65,7 +65,6 @@ Admin Dashboard
                 <th>Sửa</th>
                 <th>Xoá mềm</th>
                 <th>Khôi phục</th>
-                <th>Xoá hẳn</th>
             </tr>
         </thead>
         <tbody>
@@ -102,19 +101,6 @@ Admin Dashboard
                     <a href="{{ route('admin.product.restore', ['id' => $product->id]) }}" class="" style="font-size: 15px;"><i class="fa fa-undo"></i></a>
                     @endif
                 </td>
-                <td style="text-align: center;">
-                    @if($product->trashed())
-                    <form action="{{ route('admin.product.forceDelete') }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <input type="hidden" name="id" value="{{ $product->id }}">
-                        <button style="border: none;" type="submit"><i class="fa fa-trash-can" style="color:red;"></i></button>
-                    </form>
-                    @endif
-                </td>
-
-
-
             </tr>
             @endforeach
             @else
