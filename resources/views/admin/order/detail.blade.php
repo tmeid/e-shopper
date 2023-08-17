@@ -35,7 +35,7 @@ Chi tiết đơn hàng
 
                         @foreach($order->prodItems as $prodItem)
                         <p>
-                        {{ $prodItem->product->name .' (size ' .$prodItem->size .', màu ' .$prodItem->color  .')' .': ' .number_format($prodItem->pivot->price, 0, null, '.') .'đ' .' x ' .$prodItem->pivot->quantity .' cái'  }}
+                        {{ '#' .$prodItem->sku .' '.$prodItem->product->name .' (size ' .$prodItem->size .', màu ' .$prodItem->color  .')' .': ' .number_format($prodItem->pivot->price, 0, null, '.') .'đ' .' x ' .$prodItem->pivot->quantity .' cái'  }}
                         </p>
                         @endforeach
 

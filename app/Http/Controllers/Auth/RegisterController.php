@@ -60,7 +60,16 @@ class RegisterController extends Controller
                 }
 
             }],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'email', 'max:255', 'unique:users', function($attribute, $value, $fail){
+                    // remove a dot character before @ character because both of them are same email: 
+                    // d.thuy.3319@gmai.com ==> dthuy3319@gmail.com
+                    $pattern = '/\.(?=[^\s]*@)/';
+                    $value = preg_replace($pattern, '', $value);
+                    $findEmail = User::where('email', $value)->first();
+                    if($findEmail){
+                        $fail('Email đã tồn tại');
+                    }
+            }],
             'phone' => ['required', 'string', function($attribute, $value, $fail){
                 // 
                 $reg = '/(\+84|0)[35789]([0-9]{8})$/';
@@ -76,7 +85,7 @@ class RegisterController extends Controller
             'email.required' => 'Trường email bị trống',
             'email.email' => 'Định dạng email không hợp lệ',
             'email.unique' => 'Email đã tồn tại trong hệ thống',
-            'phone' => 'Trường điện thoại bị trống',
+            'phone.required' => 'Trường điện thoại bị trống',
             'password.required' => 'Trường mật khẩu bị trống',
             'password.min' => 'Trường mật khẩu phải có ít nhất 8 kí tự',
             'password.confirmed' => 'Mật khẩu không khớp nhau'

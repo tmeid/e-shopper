@@ -299,8 +299,8 @@ Giỏ hàng | E-Shopper
                         alert('Xin vui lòng xoá những sản phẩm hết hàng để đặt hàng');
                     }else if(response.status == 'exceed_qty'){
                         alert('Sản phẩm vượt quá số lượng còn lại trong kho');
-                    }else if(response.status == 'empty'){
-                        alert('Giỏ hàng trống');
+                    }else if(response.status == 'invalid_qty'){
+                        alert('Vui lòng chọn số lượng');
                     }else if(response.status = 'out_of_business'){
                         alert('Xin vui lòng xoá những sản phẩm ngừng kinh doanh để đặt hàng');
                     }

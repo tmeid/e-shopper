@@ -126,6 +126,9 @@ class CheckoutController extends Controller
                             }elseif($cart_item->quantity <= 0 || $cart_item->trashed()){
                                 $fail('Vui lòng xoá sản phẩm hết hàng');
                                 break;
+                            }elseif($cart_item->pivot->quantity  <= 0){
+                                $fail('Vui lòng chọn số lượng');
+                                break;
                             }elseif($cart_item->pivot->quantity >  $cart_item->quantity){
                                 $fail('Vượt quá số lượng có sẵn');
                                 break;

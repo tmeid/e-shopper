@@ -200,6 +200,9 @@ class CartController extends Controller
                         // sản phẩm trong stock đã hết hàng
                         if($cart_item->quantity <= 0 || $cart_item->trashed()){
                             return response()->json(['status' => 'sold_out']);
+                        }else if($cart_item->pivot->quantity <= 0){
+                            // số lượng mua k hợp lệ
+                            return response()->json(['status' => 'invalid_qty']);
                         }else if($cart_item->pivot->quantity > $cart_item->quantity){
                             // cart_item_qty > qty_stock
                             return response()->json(['status' => 'exceed_qty']);
