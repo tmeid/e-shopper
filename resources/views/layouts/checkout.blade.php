@@ -90,16 +90,21 @@ Thanh toán | E-Shopper
                 <a type="button" class="edit btn border-success mb-2" onclick="openLightbox(-100)">Cập nhật địa chỉ</a>
                 
                 @if(count($addresses) > 0)
-                <label for="select-address" class="d-block">Địa chỉ</label>
-                @error('address')
-                <span class="text-danger">{{ $message }}</span>
-                @enderror
-                <select name="address" id="select-address" class="form-control" aria-label="Default select example">
-                    <option value="">Chọn địa chỉ</option>
-                    @foreach($addresses as $address)
-                    <option value="{{ $address->id }}" {{ old('address') == $address->id ? 'selected' : '' }}>{{ $address->name .' (' .$address->phone .'), ' .$address->address }}</option>
-                    @endforeach
-                </select>
+                    <label for="select-address" class="d-block">Địa chỉ</label>
+                    @error('address')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                    <select name="address" id="select-address" class="form-control" aria-label="Default select example">
+                        <option value="">Chọn địa chỉ</option>
+                        @foreach($addresses as $address)
+                        <option value="{{ $address->id }}" {{ old('address') == $address->id ? 'selected' : '' }}>{{ $address->name .' (' .$address->phone .'), ' .$address->address }}</option>
+                        @endforeach
+                    </select>
+                @else 
+                    @error('address')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                    <input type="hidden" name="address">
                 @endif
                 <br>
                 @if(count($payments) > 0)

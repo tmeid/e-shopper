@@ -144,7 +144,7 @@ class CheckoutController extends Controller
                 
             }]
         ], [
-            'address.required' => 'Chưa nhập địa chỉ',
+            'address.required' => 'Chưa chọn địa chỉ',
             'payment.required' => 'Chưa chọn hình thức thanh toán'
         ]);
 
