@@ -63,7 +63,7 @@ Admin Dashboard
                 <td>{{ ++$key }}</td>
                 <td>{{ $review->user_id }}</td>
                 <td>
-                    <a class="text-decoration" href="{{ route('product.detail', ['product' => $review->product->slug ]) }}">{{ $review->product->name }}</a>
+                    <a class="text-decoration" href="{{ route('product.detail', ['product' => $review->productWithTrased->slug ]) }}">{{ $review->productWithTrased->name }}</a>
                 </td>
                 <td>{{ $review->rating }}</td>
                 <td>{{  $review->message }}</td>
