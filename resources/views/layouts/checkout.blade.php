@@ -7,6 +7,7 @@ Thanh toán | E-Shopper
 @section('content')
 <!-- Cart Start -->
 <div class="container-fluid pt-2">
+    @if($items_order && count($items_order))
     <div class="row px-xl-5">
         <div class="col table-responsive mb-5 text-center">
             <h2 class="text-center mb-3"> THANH TOÁN</h2>
@@ -143,6 +144,9 @@ Thanh toán | E-Shopper
             </div>
         </div>
     </div>
+    @else
+    <p class="text-center">Giỏ hàng trống</p>
+    @endif
 </div>
 <!-- Cart End -->
 <div class="wrap">
